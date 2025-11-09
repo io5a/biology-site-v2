@@ -11,7 +11,7 @@ Aici sunt organizate expoziții tematice anuale, cele mai cunoscute fiind **„F
 
 Printre cele mai apreciate atracții se numără Grădina japoneză, sectorul de plante medicinale și lacul cu nuferi.
 
-![photo by Ilinca Fronea](/gallery/articol-azalee/azalee-v1.webp)
+![photo by Ilinca Fronea](/gallery/articol-azalee/azalee-v1-(2).webp)
 
 # CARACTERISTICILE SPECIEI:
 Face parte din genul Rhododendron, dar este clasificată în două subgenuri:
