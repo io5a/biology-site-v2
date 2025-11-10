@@ -31,15 +31,15 @@ export function ArticlesList({ articles }: ArticlesListProps) {
   return (
     <>
       <div className="mb-12">
-        <h1 className="mb-4 text-4xl font-bold text-foreground">All Articles</h1>
+        <h1 className="mb-4 text-4xl font-bold text-foreground">Toate articolele</h1>
         <p className="mb-6 text-lg text-muted-foreground">
-          Browse our complete collection of biology articles ({filteredArticles.length} articles)
+          Navighează printre toate articolele  ({filteredArticles.length} articole)
         </p>
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search articles..."
+            placeholder="Caută articole..."
             className="pl-10"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
