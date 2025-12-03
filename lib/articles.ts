@@ -18,6 +18,71 @@ const articlesDirectory = path.join(process.cwd(), "content", "articles")
 // Average reading speed: 200 words per minute
 const WORDS_PER_MINUTE = 200
 
+// Romanian month names mapping
+const romanianMonths: { [key: string]: number } = {
+  ianuarie: 0,
+  februarie: 1,
+  martie: 2,
+  aprilie: 3,
+  mai: 4,
+  iunie: 5,
+  iulie: 6,
+  august: 7,
+  septembrie: 8,
+  octombrie: 9,
+  noiembrie: 10,
+  decembrie: 11,
+}
+
+// English month abbreviations mapping
+const englishMonths: { [key: string]: number } = {
+  jan: 0,
+  feb: 1,
+  mar: 2,
+  apr: 3,
+  may: 4,
+  jun: 5,
+  jul: 6,
+  aug: 7,
+  sep: 8,
+  oct: 9,
+  nov: 10,
+  dec: 11,
+}
+
+function parseDate(dateString: string): Date {
+  // Try standard Date parsing first
+  const standardDate = new Date(dateString)
+  if (!isNaN(standardDate.getTime())) {
+    return standardDate
+  }
+
+  // Handle formats like "9 Apr, 2025" or "9 Ianuarie, 2025"
+  const cleaned = dateString.trim().replace(/,/g, "")
+  const parts = cleaned.split(/\s+/)
+  
+  if (parts.length >= 3) {
+    const day = parseInt(parts[0], 10)
+    const monthStr = parts[1].toLowerCase()
+    const year = parseInt(parts[2], 10)
+
+    if (!isNaN(day) && !isNaN(year)) {
+      // Check Romanian months
+      if (romanianMonths[monthStr] !== undefined) {
+        return new Date(year, romanianMonths[monthStr], day)
+      }
+      
+      // Check English month abbreviations
+      if (englishMonths[monthStr] !== undefined) {
+        return new Date(year, englishMonths[monthStr], day)
+      }
+    }
+  }
+
+  // Fallback: return invalid date
+  return new Date(NaN)
+}
+
 function calculateReadTime(content: string): string {
   // Remove markdown syntax and count words
   // Remove code blocks, links, images, headers, etc.
@@ -101,10 +166,10 @@ export function getAllArticles(): Article[] {
     .filter((article): article is Article => article !== null)
 
   // Sort by date (newest first)
-  // Handle different date formats
+  // Handle different date formats including Romanian and English
   return articles.sort((a, b) => {
-    const dateA = new Date(a.date)
-    const dateB = new Date(b.date)
+    const dateA = parseDate(a.date)
+    const dateB = parseDate(b.date)
     
     // If dates are invalid, put them at the end
     if (isNaN(dateA.getTime()) && isNaN(dateB.getTime())) return 0

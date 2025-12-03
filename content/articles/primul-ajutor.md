@@ -1,7 +1,7 @@
 ---
 title: "Primul ajutor - salvează viața în mod corect"
 excerpt: 'Activitatea "Primul ajutor-salvează viața în mod corect", organizată de către doamna profesor Bohotineanu Ioana, în cadrul Săptămânii Altfel, a oferit elevilor din ciclul liceal o abordare practică asupra oferirii primului ajutor.'
-category: "Category Name"
+category: "Activitate"
 date: "9 Ianuarie, 2025"
 ---
 Activitatea "Primul ajutor-salvează viața în mod corect", organizată de către doamna profesor Bohotineanu Ioana, în cadrul Săptămânii Altfel, a oferit elevilor din ciclul liceal o abordare practică asupra oferirii primului ajutor.
