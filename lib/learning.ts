@@ -35,6 +35,50 @@ function getLearningMaterialSlugsFromFilesystem(): string[] {
     .map((file) => file.replace(/\.md$/, ""))
 }
 
+function mergeTags(
+  groupTags: Record<string, string | string[]>,
+  materialTags?: Record<string, string | string[]>,
+): Record<string, string | string[]> {
+  if (!materialTags) {
+    return { ...groupTags }
+  }
+
+  const merged: Record<string, string | string[]> = { ...groupTags }
+
+  for (const [key, value] of Object.entries(materialTags)) {
+    if (merged[key]) {
+      // If both exist, merge arrays or combine
+      const existing = merged[key]
+      const newValue = value
+
+      if (Array.isArray(existing) && Array.isArray(newValue)) {
+        // Merge arrays and remove duplicates
+        merged[key] = [...new Set([...existing, ...newValue])]
+      } else if (Array.isArray(existing)) {
+        // Add string to array if not already present
+        if (!existing.includes(newValue as string)) {
+          merged[key] = [...existing, newValue as string]
+        }
+      } else if (Array.isArray(newValue)) {
+        // Convert existing to array and merge
+        if (!newValue.includes(existing as string)) {
+          merged[key] = [existing as string, ...newValue]
+        } else {
+          merged[key] = newValue
+        }
+      } else {
+        // Both are strings, keep the material tag (more specific)
+        merged[key] = newValue
+      }
+    } else {
+      // New tag from material
+      merged[key] = value
+    }
+  }
+
+  return merged
+}
+
 function getLearningMaterialBySlugFromFilesystem(slug: string, groupSlug?: string): LearningMaterial | null {
   try {
     const fullPath = groupSlug
@@ -62,6 +106,7 @@ function getLearningMaterialBySlugFromFilesystem(slug: string, groupSlug?: strin
       date: data.date,
       content: content.trim(),
       groupSlug,
+      tags: data.tags,
     }
   } catch (error) {
     console.error(`Error reading learning material ${slug}:`, error)
@@ -113,7 +158,7 @@ function getLearningGroupsFromFilesystem(): LearningGroup[] {
         .filter((material): material is LearningMaterial => material !== null)
         .map((material) => ({
           ...material,
-          tags: data.tags,
+          tags: mergeTags(data.tags, material.tags),
         }))
 
       // Sort materials by date if available, otherwise by title

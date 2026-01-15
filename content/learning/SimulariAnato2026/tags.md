@@ -5,11 +5,5 @@ tags:
   subject: "Anatomie"
   grade: "12"
   type: "Simulare"
-  cities:
-    - "Buzău"
-    - "Cluj"
-    - "Iași"
-    - "Suceava"
-    - "Vaslui"
 ---
 
