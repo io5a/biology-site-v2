@@ -5,10 +5,10 @@ category: "Informational"
 date: "13 Ianuarie, 2025"
 ---
 **Țestoasa hartă Ouachita** este o specie fascinantă de țestoasă semiacvatică, cunoscută pentru aspectul său unic și adaptările sale speciale la viața în medii de apă dulce. Endemică în America de Nord, această specie este întâlnită în special în sistemul râului Mississippi și afluenții săi, dar populații izolate au fost identificate și în alte regiuni. Acest articol detaliat explorează aspectele biologice, ecologice și comportamentale ale țestoasei Ouachita, combinând informații din diverse surse și cercetări.
-![](/gallery/articol-testoasa/testoasa-kemy.jpg) 
+![](/gallery/articol-testoasa/testoasa-kemy.webp) 
 # Descriere Fizică
 Țestoasele hartă Ouachita sunt denumite adesea „Saw Backs” datorită crestei vizibile de pe carapace, formată din proeminențe sau noduri care se întind de-a lungul coloanei vertebrale. Această caracteristică este mai pronunțată la masculi decât la femele.
-![](/gallery/articol-testoasa/carapacea-testoasei.jpg)
+![](/gallery/articol-testoasa/carapacea-testoasei.webp)
 - Dimensiuni: 
   - Masculii: 9-16,5 cm 
   - Femelele: 12,5-26 cm 
@@ -17,15 +17,15 @@ date: "13 Ianuarie, 2025"
   - Carapacea (partea superioară a carapacei): Verde măsliniu până la maro, cu linii galbene intricate ce seamănă cu liniile unei hărți.  
   - Plastronul (partea inferioară): Galben pal cu marcaje negre, care se estompează pe măsură ce țestoasa îmbătrânește.
 
-![](/gallery/articol-testoasa/testoasa-underside.jpg)
+![](/gallery/articol-testoasa/testoasa-underside.webp)
 
 - Capul, gâtul și membrele: Verde-închis cu dungi galbene subțiri și trei pete galbene caracteristice pe față: una mare, ovală, în spatele ochiului, una sub ochi și una sub linia gurii.
 
-![](/gallery/articol-testoasa/testoasa-laba.jpg)
+![](/gallery/articol-testoasa/testoasa-laba.webp)
 
 - Ochii:  Galbeni cu o pupilă orizontală neagră, o trăsătură specifică acestui gen.
 
-![](/gallery/articol-testoasa/testoasa-cap.jpg)
+![](/gallery/articol-testoasa/testoasa-cap.webp)
 
 # Dimorfism Sexual
 
@@ -81,19 +81,19 @@ Reproducerea are loc primăvara, iar femelele își depun ouăle vara în cuibur
 
 Puii rămân în cuib până când absorb complet sacul vitelin, uneori iernând în sol. Este posibilă și hibridizarea între țestoasele Ouachita și False Map, rezultând un cuib mixt.
 
-![](/gallery/articol-testoasa/testoasa-ecolozand.jpg)
+![](/gallery/articol-testoasa/testoasa-ecolozand.webp)
 
 # Adaptări Comportamentale
 
 Țestoasele Ouachita comunică mai ales prin atingere și semnale olfactive, deși nu emit vocalizări. Sunt foarte dependente de locurile de odihnă și de soare pentru reglarea temperaturii corporale.
 
-![](/gallery/articol-testoasa/testoase-versus.jpg)
+![](/gallery/articol-testoasa/testoase-versus.webp)
 
 # Durata de Viață
 
 Țestoasa hartă Ouachita poate trăi între 30 și 50 de ani, însă determinarea vârstei exacte este dificilă după 15 ani, deoarece inelele de pe scuturi devin mai puțin vizibile.
 
-![](/gallery/articol-testoasa/testoasa-singura.jpg)
+![](/gallery/articol-testoasa/testoasa-singura.webp)
 
 # Conservare și Amenințări
 
@@ -117,7 +117,7 @@ Deși țestoasa Ouachita este considerată „comună local” în multe zone, c
 
 - Temperaturile de incubare influențează nu doar sexul puilor, ci și modelele de pe cap, ceea ce face fiecare individ unic.  
 
-![](/gallery/articol-testoasa/testoasa-false-map.jpg)
+![](/gallery/articol-testoasa/testoasa-false-map.webp)
 
 # Concluzie
 

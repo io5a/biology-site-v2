@@ -16,7 +16,7 @@ Rareș a început cu loviturile interscapulare și manevra Heimlich, utilizate �
 
 Pe parcursul demonstrațiilor, elevii au putut pune întrebări despre situații în care este nevoie acordarea primului ajutor, precum și despre activitatea lui Rareș ca voluntar la Crucea Roșie și elev la Universitatea de Medicină.
 
-![](/gallery/articol-prim-ajutor/audienta-1.jpg)
-![](/gallery/articol-prim-ajutor/audienta-2.jpg)
-![](/gallery/articol-prim-ajutor/resuscitare-adult.jpg)
-![](/gallery/articol-prim-ajutor/resuscitare-bebelus.jpg)
+![](/gallery/articol-prim-ajutor/audienta-1.webp)
+![](/gallery/articol-prim-ajutor/audienta-2.webp)
+![](/gallery/articol-prim-ajutor/resuscitare-adult.webp)
+![](/gallery/articol-prim-ajutor/resuscitare-bebelus.webp)

@@ -12,6 +12,7 @@ Aici sunt organizate expoziții tematice anuale, cele mai cunoscute fiind **„F
 Printre cele mai apreciate atracții se numără Grădina japoneză, sectorul de plante medicinale și lacul cu nuferi.
 
 ![photo by Ilinca Fronea](/gallery/articol-azalee/azalee-v1-(2).webp)
+>photo by Ilinca Fronea
 
 # CARACTERISTICILE SPECIEI:
 Face parte din genul Rhododendron, dar este clasificată în două subgenuri:
@@ -30,6 +31,7 @@ Azaleele preferă temperaturi cuprinse între 15 și 24°C.
 (Toxicitate: Frunzele și florile conțin grayanotoxine, periculoase pentru oameni și animale.)
 ![photo by Ana-Maria Ionescu](/gallery/articol-azalee/Azalee-v3.webp)
 (Dimensiunea arbuștilor variază dela 30 cm până la 2,5m.)
+>photo by Ana-Maria Ionescu
 
 Forma florilor poate fi simplă, dublă, în formă de trompetă sau cu margini ondulate. 
 
@@ -51,8 +53,9 @@ Azaleea este o plantă care preferă locurile semiumbrite sau umbrite, ferite de
 
 ![Photos by Ilinca Fronea](/gallery/articol-azalee/Azalee-v7.webp)
 ![Photos by Ilinca Fronea](/gallery/articol-azalee/Azalee-v8.webp)
-
+>photo by Ilinca Fronea
 ![Photos by Ayana Sălceanu](/gallery/articol-azalee/Camelii-v1.webp)
+>photo by Ayana Sălceanu
 
 ## CARACTERISTICILE SPECIEI
 - Face parte din familia Theaceae și este originară din Asia de Est. Include mai multe specii, cea mai cunoscută fiind Camellia japonica.
@@ -61,7 +64,10 @@ Azaleea este o plantă care preferă locurile semiumbrite sau umbrite, ferite de
 - Preferă un climat temperat; adaptabilă la condiții de temperaturi scăzute. Totuși, este recomandată protejarea plantei de vânturile reci, în special în sezonul rece.
 
 Toxicitate: nu sunt toxice pentru oameni și animale. ![Photos by Amelia Dumitrașcu](/gallery/articol-azalee/Camelii-v2.webp)
+>photo by Amelia Dumitrașcu
+
 Dimensiunea arbuștilor variază de la 50 cm până la 6 m. ![Photos by Ayana Sălceanu](/gallery/articol-azalee/Camelii-v3.webp)
+>photo by Ayana Sălceanu
 
 ## Structura florii și polenizarea:
 - Petale mari, cu un centru compus din stamine și pistil.
@@ -78,6 +84,7 @@ Tăierile nu sunt necesare în mod regulat, dar este recomandată îndepărtarea
 
 ![Photos by Ilinca Fronea](/gallery/articol-azalee/Camelii-v4.webp)
 ![Photos by Ilinca Fronea](/gallery/articol-azalee/Camelii-v5.webp)
+>photo by Ilinca Fronea
 
 Există peste 3.000 de varietăți de Camellia japonica, multe dintre ele dezvoltate special pentru frumusețea florilor sau rezistență la boli.
 
@@ -86,6 +93,7 @@ Planta este extrem de longevivă, existând exemplare celebre care depășesc v�
 Florile de camelie nu au un parfum foarte intens, ceea ce contrastează cu aspectul lor spectaculos.
 
 ![Photos by Ayana Sălceanu](/gallery/articol-azalee/Camelii-v6.webp)
+>photo by Ayana Sălceanu
 
 ## ȘTIAȚI CĂ...?
 

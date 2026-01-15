@@ -16,7 +16,7 @@ export default function AnnouncementsPage() {
           </div>
           <div>
             <h1 className="text-4xl font-bold text-foreground">Anunțuri</h1>
-            <p className="text-muted-foreground">Stay updated with the latest news and events</p>
+            <p className="text-muted-foreground">Rămâi la curent cu cele mai recente anunțuri și evenimente</p>
           </div>
         </div>
 
