@@ -4,6 +4,8 @@ import { Analytics } from "@vercel/analytics/next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
+import { ThemeProvider } from "@/components/theme-provider"
+import { themeConfig } from "@/config/theme"
 
 // Configure your font here
 const inter = Inter({
@@ -22,10 +24,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" data-theme={themeConfig.theme} suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <Navigation />
-        {children}
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme={themeConfig.theme}
+          forcedTheme={themeConfig.theme}
+          enableSystem={false}
+          themes={["default", "blue", "purple", "orange", "red", "pink", "cyan"]}
+        >
+          <Navigation />
+          {children}
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
