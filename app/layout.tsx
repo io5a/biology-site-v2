@@ -24,14 +24,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark" data-theme={themeConfig.theme} suppressHydrationWarning>
+    <html lang="en" data-theme={themeConfig.theme} suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider
-          attribute="data-theme"
-          defaultTheme={themeConfig.theme}
-          forcedTheme={themeConfig.theme}
-          enableSystem={false}
-          themes={["default", "blue", "purple", "orange", "red", "pink", "cyan"]}
+          attribute="class"
+          defaultTheme="system"
+          enableSystem={true}
         >
           <Navigation />
           {children}
