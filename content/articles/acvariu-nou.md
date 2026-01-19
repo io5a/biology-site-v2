@@ -2,7 +2,7 @@
 title: "Noul Acvariu al școlii"
 excerpt: 'Anul acesta am ales să populăm acvariul cu pești, întrucât anul trecut l-am avut pe vestitul Kemy, care a căpătat repede faimă în școală. Dorim să avem diversitate, astfel am zis să schimbăm și să aducem pești'
 category: "Activitate"
-date: "15 Jan 2026"
+date: "15 Ianuarie 2026"
 ---
 
 

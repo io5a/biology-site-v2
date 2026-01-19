@@ -2,7 +2,7 @@
 title: "Expoziție Azalee & Camelii"
 excerpt: 'GRĂDINA BOTANICĂ „ANASTASIE FĂTU” IAȘI este cea mai veche grădină botanică din România, fondată în 1856 de medicul și naturalistul Anastasie Fătu. Se întinde pe aproximativ 100 de hectare, fiind una dintre cele mai mari din țară. '
 category: "Activitate"
-date: "9 Apr, 2025"
+date: "9 Aprilie 2025"
 ---
 
 **GRĂDINA BOTANICĂ „ANASTASIE FĂTU” IAȘI** este cea mai veche grădină botanică din România, fondată în 1856 de medicul și naturalistul Anastasie Fătu. Se întinde pe aproximativ 100 de hectare, fiind una dintre cele mai mari din țară. Grădina include 12 sere care adăpostesc specii tropicale, subtropicale și mediteraneene, printre care: orhidee, plante carnivore, bonsai, cactuși

@@ -2,7 +2,7 @@
 title: "KEMY (țestoasa laboratorului)"
 excerpt: 'Țestoasa hartă Ouachita este o specie fascinantă de țestoasă semiacvatică, cunoscută pentru aspectul său unic și adaptările sale speciale la viața în medii de apă dulce. Endemică în America de Nord, această specie este întâlnită în special în sistemul râului Mississippi și afluenții săi, dar populații izolate au fost identificate și în alte regiuni.'
 category: "Informational"
-date: "13 Ianuarie, 2025"
+date: "13 Ianuarie 2025"
 ---
 **Țestoasa hartă Ouachita** este o specie fascinantă de țestoasă semiacvatică, cunoscută pentru aspectul său unic și adaptările sale speciale la viața în medii de apă dulce. Endemică în America de Nord, această specie este întâlnită în special în sistemul râului Mississippi și afluenții săi, dar populații izolate au fost identificate și în alte regiuni. Acest articol detaliat explorează aspectele biologice, ecologice și comportamentale ale țestoasei Ouachita, combinând informații din diverse surse și cercetări.
 ![](/gallery/articol-testoasa/testoasa-kemy.webp) 
