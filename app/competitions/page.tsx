@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardConcurs , CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, Calendar, Download, Globe2, MapPin } from "lucide-react"
@@ -27,7 +27,7 @@ export default function CompetitionsPage() {
             const hasButtons = competition.hasPastQuestions || competition.hasAnswerKey || showWebsiteButton
             
             return (
-              <Card
+              <CardConcurs
                 key={competition.slug}
                 className={`transition-all ${
                   competition.status === "Upcoming" ? "border-primary/50 bg-primary/5" : "hover:border-primary/30"
@@ -93,7 +93,7 @@ export default function CompetitionsPage() {
                     </div>
                   </CardContent>
                 )}
-              </Card>
+              </CardConcurs>
             )
           })}
         </div>
