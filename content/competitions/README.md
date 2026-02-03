@@ -9,12 +9,13 @@ Each competition should be a `.md` file with the following frontmatter:
 ```markdown
 ---
 title: "Competition Title"
-year: "2025"
 date: "Month Day, Year"
-status: "Upcoming" or "Past" (optional - automatically determined from date)
-description: "A brief description of the competition"
+description: "A brief description of the competition" (optional)
+location: "București" (optional)
+stage: "național" (optional)
 pastQuestions: "/competitions/competition-name-questions.pdf" (optional)
 answerKey: "/competitions/competition-name-answers.pdf" (optional)
+officialUrl: "https://exemplu-concurs.ro" (optional)
 ---
 
 Your detailed competition information goes here...
@@ -25,14 +26,16 @@ You can use **markdown formatting** for rich content.
 ## Frontmatter Fields
 
 - **title**: The main title of the competition
-- **year**: The year of the competition (e.g., "2025")
-- **date**: The date of the competition in format "Month Day, Year" or "YYYY-MM-DD"
+- **date**: The date of the competition in format "Month Day, Year" or "YYYY-MM-DD". The year badge is automatically extracted from this field.
 - **status**: (Optional) Either "Upcoming" or "Past". If not provided, it will be automatically determined based on the date:
   - If the date is today or in the future → "Upcoming"
   - If the date is in the past → "Past"
-- **description**: A short description that appears in the card (1-2 sentences)
+- **description**: (Optional) A short description that appears in the card (1-2 sentences)
+- **location**: (Optional) Location of the event (e.g. "București", "Online")
+- **stage**: (Optional) Stage of the competition (e.g. "național", "local", "internațional")
 - **pastQuestions**: (Optional) Path to the past questions PDF file
 - **answerKey**: (Optional) Path to the answer key PDF file
+- **officialUrl**: (Optional) URL to the official website of the competition. If present, a button will appear that opens this site in a new tab.
 
 ## PDF Files
 
@@ -69,11 +72,13 @@ You can use all standard Markdown features in the content:
 ```markdown
 ---
 title: "Biology Olympiad 2024"
-year: "2024"
 date: "March 20, 2024"
 description: "Last year's competition focused on molecular and biochemical concepts."
+location: "București"
+stage: "național"
 pastQuestions: "/competitions/biology-olympiad-2024-questions.pdf"
 answerKey: "/competitions/biology-olympiad-2024-answers.pdf"
+officialUrl: "https://olimpiadadebiologie.ro"
 ---
 
 # Biology Olympiad 2024

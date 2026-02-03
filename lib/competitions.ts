@@ -6,14 +6,33 @@ import matter from "gray-matter"
 export interface Competition {
   slug: string
   title: string
-  year: string
   date: string
   status: "Upcoming" | "Past"
-  description: string
+  /**
+   * Year is now derived from the date field (date.getFullYear())
+   * and is no longer required in the markdown frontmatter.
+   */
+  year: string
+  /**
+   * Short description shown on the card. Optional in frontmatter.
+   */
+  description?: string
+  /**
+   * Optional location of the competition (e.g. "București", "Online")
+   */
+  location?: string
+  /**
+   * Optional stage of the competition (e.g. "național", "local", "internațional")
+   */
+  stage?: string
   pastQuestions?: string
   answerKey?: string
   hasPastQuestions: boolean
   hasAnswerKey: boolean
+  /**
+   * Optional URL to the official competition website.
+   */
+  officialUrl?: string
   content: string
 }
 
@@ -75,27 +94,37 @@ function getCompetitionBySlugFromFilesystem(slug: string): Competition | null {
     const fileContents = fs.readFileSync(fullPath, "utf8")
     const { data, content } = matter(fileContents)
 
-    // Validate required fields (status is now optional)
-    if (!data.title || !data.year || !data.date || !data.description) {
-      console.warn(`Competition ${slug} is missing required frontmatter fields`)
+    // Validate required fields (status is optional, description is now optional)
+    if (!data.title || !data.date) {
+      console.warn(`Competition ${slug} is missing required frontmatter fields (title or date)`)
       return null
     }
+
+    const competitionDate = new Date(data.date)
+    const year = isNaN(competitionDate.getTime()) ? "" : competitionDate.getFullYear().toString()
 
     const pastQuestions = data.pastQuestions || undefined
     const answerKey = data.answerKey || undefined
     const status = determineStatus(data.date, data.status)
+    const location = data.location || undefined
+    const stage = data.stage || undefined
+    const officialUrl = data.officialUrl || undefined
+    const description = data.description || undefined
 
     return {
       slug,
       title: data.title,
-      year: data.year,
+      year,
       date: data.date,
       status,
-      description: data.description,
+      description,
+      location,
+      stage,
       pastQuestions,
       answerKey,
       hasPastQuestions: checkPdfExists(pastQuestions),
       hasAnswerKey: checkPdfExists(answerKey),
+      officialUrl,
       content: content.trim(),
     }
   } catch (error) {

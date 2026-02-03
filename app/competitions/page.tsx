@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Trophy, Calendar, Download } from "lucide-react"
+import { Trophy, Calendar, Download, Globe2, MapPin } from "lucide-react"
 import { getAllCompetitions } from "@/lib/competitions"
 import { MarkdownRenderer } from "@/components/markdown-renderer"
 
@@ -23,8 +23,8 @@ export default function CompetitionsPage() {
 
         <div className="space-y-6">
           {competitions.map((competition) => {
-            const hasButtons = competition.hasPastQuestions || competition.hasAnswerKey
-            const hasBothButtons = competition.hasPastQuestions && competition.hasAnswerKey
+            const showWebsiteButton = Boolean(competition.officialUrl)
+            const hasButtons = competition.hasPastQuestions || competition.hasAnswerKey || showWebsiteButton
             
             return (
               <Card
@@ -38,27 +38,36 @@ export default function CompetitionsPage() {
                     <Badge variant={competition.status === "Upcoming" ? "default" : "secondary"}>
                       {competition.status}
                     </Badge>
-                    <Badge variant="outline">{competition.year}</Badge>
+                    {competition.year && <Badge variant="outline">{competition.year}</Badge>}
+                    {competition.stage && (
+                      <Badge variant="outline" className="capitalize">
+                        {competition.stage}
+                      </Badge>
+                    )}
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3" />
                       {competition.date}
                     </div>
+                    {competition.location && (
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <MapPin className="h-3 w-3" />
+                        {competition.location}
+                      </div>
+                    )}
+                    
                   </div>
                   <CardTitle className="text-2xl">{competition.title}</CardTitle>
-                  <CardDescription className="text-pretty">
-                    <MarkdownRenderer content={competition.description} />
-                  </CardDescription>
+                  {competition.description && (
+                    <CardDescription className="text-pretty h-2 text-0.5xl">
+                      <MarkdownRenderer content={competition.description} />
+                    </CardDescription>
+                  )}
                 </CardHeader>
                 {hasButtons && (
                   <CardContent className="pt-0">
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {competition.hasPastQuestions && competition.pastQuestions && (
-                        <Button
-                          asChild
-                          variant="outline"
-                          size="sm"
-                          className={`gap-1 bg-transparent ${hasBothButtons ? "flex-1" : ""}`}
-                        >
+                        <Button asChild variant="outline" size="sm" className="gap-1 bg-transparent">
                           <a href={competition.pastQuestions} target="_blank" rel="noopener noreferrer">
                             <Download className="h-3 w-3" />
                             Past Questions
@@ -66,15 +75,18 @@ export default function CompetitionsPage() {
                         </Button>
                       )}
                       {competition.hasAnswerKey && competition.answerKey && (
-                        <Button
-                          asChild
-                          variant="outline"
-                          size="sm"
-                          className={`gap-1 bg-transparent ${hasBothButtons ? "flex-1" : ""}`}
-                        >
+                        <Button asChild variant="outline" size="sm" className="gap-1 bg-transparent">
                           <a href={competition.answerKey} target="_blank" rel="noopener noreferrer">
                             <Download className="h-3 w-3" />
                             Answer Key
+                          </a>
+                        </Button>
+                      )}
+                      {showWebsiteButton && competition.officialUrl && (
+                        <Button asChild variant="outline" size="sm" className="gap-1 bg-transparent">
+                          <a href={competition.officialUrl} target="_blank" rel="noopener noreferrer">
+                            <Globe2 className="h-3 w-3" />
+                            Site concurs
                           </a>
                         </Button>
                       )}
