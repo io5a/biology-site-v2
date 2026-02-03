@@ -58,7 +58,7 @@ export default function CompetitionsPage() {
                   </div>
                   <CardTitle className="text-2xl">{competition.title}</CardTitle>
                   {competition.description && (
-                    <CardDescription className="text-pretty h-2 text-0.5xl">
+                    <CardDescription className="text-pretty">
                       <MarkdownRenderer content={competition.description} />
                     </CardDescription>
                   )}
