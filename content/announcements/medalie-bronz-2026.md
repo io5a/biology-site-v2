@@ -17,9 +17,9 @@ Această distincție aduce onoare României și comunității academice ieșene 
 
 Felicitări **Ioanei Iasmina Huțupașu** și **doamnei profesoare Ioana Bohotineanu** pentru această performanță excepțională, care aduce prestigiu României și reconfirmă locul Iașului în elita educației și a cercetării școlare.
 
-![](/gallery/premiere-lot-largit-onb-2025/premiere-(0).webp)
-![](/gallery/premiere-lot-largit-onb-2025/premiere-(1).webp)
-![](/gallery/premiere-lot-largit-onb-2025/premiere-(2).webp)
-![](/gallery/premiere-lot-largit-onb-2025/premiere-(3).webp)
-![](/gallery/premiere-lot-largit-onb-2025/premiere-(4).webp)
-![](/gallery/premiere-lot-largit-onb-2025/premiere-(5).webp)
+![](/gallery/medalie-bronz-2026/premiere-(0).webp)
+![](/gallery/medalie-bronz-2026/premiere-(1).webp)
+![](/gallery/medalie-bronz-2026/premiere-(2).webp)
+![](/gallery/medalie-bronz-2026/premiere-(3).webp)
+![](/gallery/medalie-bronz-2026/premiere-(4).webp)
+![](/gallery/medalie-bronz-2026/premiere-(5).webp)
