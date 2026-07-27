@@ -1,6 +1,6 @@
 import os
 
-folder_path = "D:/Proiecte/biology lab v3/biology-lab/public/gallery/ziua-down-2026"
+folder_path = "C:\my stuff\proiecte\boho-site-bio\biology-site-v2\public\gallery\medalie-bronz-2026"
 
 for file in os.listdir(folder_path):
-    print("![](/gallery/ziua-down-2026/"+file+")")
+    print("![](/gallery/medalie-bronz-2026/"+file+")")
