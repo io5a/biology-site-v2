@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { Microscope, Menu, X } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { hrtime } from "process"
 
 const navItems = [
   { href: "/", label: "Acasă" },
@@ -14,6 +15,7 @@ const navItems = [
   { href: "/learning", label: "Materiale de studiu" },
   { href: "/competitions", label: "Concursuri" },
   { href: "/gallery", label: "Galerie" },
+  { href: "/loginPage", label: "Cont"}
 ]
 
 export function Navigation() {
