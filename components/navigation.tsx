@@ -15,7 +15,7 @@ const navItems = [
   { href: "/learning", label: "Materiale de studiu" },
   { href: "/competitions", label: "Concursuri" },
   { href: "/gallery", label: "Galerie" },
-  { href: "/loginPage", label: "Cont"}
+  { href: "/login-page", label: "Cont"}
 ]
 
 export function Navigation() {

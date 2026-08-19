@@ -6,6 +6,7 @@ import "./globals.css"
 import { Navigation } from "@/components/navigation"
 import { ThemeProvider } from "@/components/theme-provider"
 import { themeConfig } from "@/config/theme"
+import { AuthProvider } from "@/app/context/authContext"
 
 // Configure your font here
 const inter = Inter({
@@ -24,17 +25,20 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
+    
     <html lang="en" data-theme={themeConfig.theme} suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem={true}
-        >
-          <Navigation />
-          {children}
-        </ThemeProvider>
-        <Analytics />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={true}
+          >
+            <AuthProvider>
+              <Navigation />
+              {children}
+            </AuthProvider>
+          </ThemeProvider>
+          <Analytics />
       </body>
     </html>
   )
