@@ -29,6 +29,7 @@ export function AuthProvider({children}){
     if(user){
       setCurrentUser({...user})
       setUserLoggedIn(true)
+      setUserName(user.displayName)
     }
     else{
       setCurrentUser(null)

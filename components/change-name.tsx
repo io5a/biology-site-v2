@@ -31,7 +31,7 @@ export function ChangeNameForm() {
     <>
       <div className="form-center">
         <div className="form">
-          <div>Conecteaza-te</div>
+          <div>Modifica numele</div>
           <form className="form-fields" onSubmit={handleSubmitForm}>
             <label>Nume</label>
             <input
@@ -42,7 +42,7 @@ export function ChangeNameForm() {
               placeholder="Nume de utilizator"
               id='nume'
               required/>
-            <div className="buttons">
+            <div className="buttons-change-name">
               <Button type="submit">{currentUser?.displayName ? "Schimba Numele" : "Adauga Numele"}</Button>
               <Button type="button" onClick={cancelNameChange}>Anuleaza</Button>
             </div>

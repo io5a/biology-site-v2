@@ -7,6 +7,7 @@
 }
 
 .account-details{
+  border-width: 1px;
   background-color:#0E150A;
   display: flex;
   align-items: center;
@@ -19,7 +20,7 @@
 
 .account-info{
   /* background-color: 182212; */
-  background-color: #245C2D;
+  background-color: #1a331e;
   display:flex;
   flex-direction: column;
   justify-content:space-evenly;
@@ -60,7 +61,6 @@
 }
 
 .mail{
-  padding-bottom: 50px;
   font-size: 25px;
 }
 
@@ -77,12 +77,16 @@
 }
 
 .article{
-  background-color: #384E3C;
+  background-color: #1a331e;
   margin-top: 20px;
   padding:10px;
   border-radius: 13px;
   cursor: pointer;
+  border-width: 1px;
+}
 
+.article:hover{
+  border-color: #3c9b64;
 }
 
 .article-title{

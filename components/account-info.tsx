@@ -6,6 +6,7 @@ import { useAuth } from "@/app/context/authContext"
 import type { Article } from "@/lib/articles"
 import { Button } from "./ui/button"
 import { doChangeName, doSignOut } from "@/app/firebase/firebase"
+import { ArticlesList } from "./articles-list"
 
 
 const testArticle={
@@ -37,9 +38,11 @@ export function AccountInfo({ articles }: { articles: Article[] }){
             <div className="articles">
               {
                 articles.map(Article => {
+                  console.log(Article)
                   return (
                     <AccountArticle 
                     key={Article.title}
+                    slug={Article.slug}
                     name={Article.title}
                     shortDesc={Article.excerpt}/>
                   )
