@@ -1,0 +1,37 @@
+.form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(7, 45, 24);
+  padding: 25px 15px;
+  border-radius: 10px;
+}
+.form-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 700px;
+}
+.form-fields{
+  display: flex;
+  flex-direction: column;
+}
+
+.form-fields label{
+  margin-top: 10px;
+}
+
+.form-fields input{
+  border-color: #79877c;
+  border-width: 2px;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.buttons{
+  margin-top: 20px;
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}

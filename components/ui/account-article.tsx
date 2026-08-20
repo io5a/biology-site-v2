@@ -6,6 +6,7 @@ export function AccountArticle({name,shortDesc}:{[key:string]:string}){
           Titlu: </span>
           {name}
       </div>
+      <hr className="article-line-break"/>
       <div className="article-desc">
         <span className="preamble-article">
           Descriere: </span> 

@@ -47,7 +47,9 @@
   flex-direction: column;
 }
 .title-break{
-  border: 1px solid #245C2D;
+  /* rgb(180, 180, 180) */
+  /* 245C2D */
+  border: 1px solid rgb(180, 180, 180);
   margin-top:5px;
 }
 
@@ -71,6 +73,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow:scroll;
 }
 
 .article{
@@ -78,10 +81,13 @@
   margin-top: 20px;
   padding:10px;
   border-radius: 13px;
+  cursor: pointer;
+
 }
 
 .article-title{
   padding-bottom: 5px;
+  font-weight: bold;
 }
 
 .preamble-article{
@@ -89,3 +95,18 @@
   color:rgb(180, 180, 180)
 }
 
+.article-line-break{
+  margin-bottom: 8px;
+  border: 1px solid rgb(180, 180, 180);
+
+}
+
+.name{
+  font-size: 25px;
+}
+
+.buttons{
+  width: 70%;
+  display: flex;
+  justify-content: space-evenly;
+}

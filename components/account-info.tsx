@@ -1,21 +1,33 @@
+"use client"
+
 import "../styles/account-info.css"
-import defaultPfp from "../content/default/default_pfp.jpg"
 import { AccountArticle } from "./ui/account-article"
+import { useAuth } from "@/app/context/authContext"
+import type { Article } from "@/lib/articles"
+import { Button } from "./ui/button"
+import { doChangeName, doSignOut } from "@/app/firebase/firebase"
+
 
 const testArticle={
   name:"Proiect Plantare in Gradina National",
   shortDesc:"În timp ce albinele și fluturii atrag adesea cea mai mare atenție, polenizatorii nocturni, precum moliile, liliecii și gândacii , joacă un rol la fel de esențial în menținerea sănătății ecosistemelor."
 }
 
-export function AccountInfo(){
+export function AccountInfo({ articles }: { articles: Article[] }){
+  const { currentUser, userLoggedIn, loading ,setChangingName,userName,setUserName} = useAuth();
   return(
     <>
       <div className="account-center">
         <div className="account-details">
           <div className="account-info">
             <img className="profile-pic" src="https://www.w3schools.com/html/pic_trulli.jpg"/>
-            <div className="mail">ioachimdiaconu288@gmail.com</div>
-            <div className="number-articles">nr of articles written</div>
+            <div className="name">{userName ? `Nume utilizator: ${userName}`: ''}</div>
+            <div className="mail">Email: {currentUser?.email ?? ""}</div>
+            <div className="number-articles">Numarul de articole scrise: {articles.length}</div>
+            <div className="buttons">
+              <Button size="lg" onClick={doSignOut}>Deconectare</Button>
+              <Button size="lg" onClick={()=>setChangingName(true)}>{userName ? `Schimba Numele`: 'Adauga Nume'}</Button>
+            </div>
           </div>
           <div className="articles-written">
             <div className="articles-title">
@@ -23,18 +35,16 @@ export function AccountInfo(){
             </div>
             <hr className="title-break"/>
             <div className="articles">
-              <AccountArticle
-              name={testArticle.name} 
-              shortDesc={testArticle.shortDesc}
-              />
-              <AccountArticle
-              name={testArticle.name} 
-              shortDesc={testArticle.shortDesc}
-              />
-              <AccountArticle
-              name={testArticle.name} 
-              shortDesc={testArticle.shortDesc}
-              />
+              {
+                articles.map(Article => {
+                  return (
+                    <AccountArticle 
+                    key={Article.title}
+                    name={Article.title}
+                    shortDesc={Article.excerpt}/>
+                  )
+                })
+              }
             </div>
           </div>
         </div>

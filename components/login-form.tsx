@@ -2,25 +2,31 @@
 
 import { useState } from "react";
 import { doSignInWithEmailAndPassword, doCreateUserWithEmailAndPassword } from "@/app/firebase/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuth } from "../app/context/authContext"
 import { error, log } from "console";
 import { auth } from "@/firebase";
 import { FirebaseError } from "firebase/app";
 import { errorHumanReadable } from "@/app/firebase/error-handling";
+import { Button } from "./ui/button";
+import "../styles/login-form.css"
 
 export function LoginForm() {
-  console.log(useAuth)
+  //console.log(useAuth)
   // const { currentUser, userLoggedIn, loading } = useAuth();
   //const {userLoggedIn}=useAuth() ?? undefined
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSigningIn,setIsSingingIn]=useState(false)
   const [errorMessage,setErrorMessage]=useState("")
+  //const [name,setName]=useState('')
 
-  function handleChangeName(formField: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeMail(formField: React.ChangeEvent<HTMLInputElement>) {
     setEmail(formField.target.value);
   }
+  // function handleChangeName(formField: React.ChangeEvent<HTMLInputElement>) {
+  //   setName(formField.target.value);
+  // }
   
   function handleChangePassword(
     formField: React.ChangeEvent<HTMLInputElement>,
@@ -34,6 +40,7 @@ export function LoginForm() {
       setIsSingingIn(true)
       try {
         await signInWithEmailAndPassword(auth, email, password)
+        //await updateProfile(auth.currentUser!,{displayName:name})
         setErrorMessage("")
       } catch (error: unknown) {
         console.log(error)
@@ -58,33 +65,49 @@ export function LoginForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmitForm}>
-        <label>Email</label>
-        <br />
-        <input
-          name="email"
-          type="text"
-          value={email}
-          onChange={handleChangeName}
-          placeholder="example@gmail.com"
-          id='email'
-          required
-        />
-        <br />
-        <label>Parola</label>
-        <br />
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={handleChangePassword}
-          placeholder="Minim 8 caractere"
-          id="password"
-          required
-        />
-        <button type="submit">Sign In</button>
-      </form>
-      <p>{errorMessage}</p>
+      <div className="form-center">
+        <div className="form">
+          <div>Conecteaza-te</div>
+          <form className="form-fields" onSubmit={handleSubmitForm}>
+            {/* <label>Nume</label>
+            <input
+              name="nume"
+              type="text"
+              value={name}
+              onChange={handleChangeName}
+              placeholder="Nume de utilizator"
+              id='email'
+              required/> */}
+            <label>Email</label>
+            <input
+              name="email"
+              type="text"
+              value={email}
+              onChange={handleChangeMail}
+              placeholder="exemplu@gmail.com"
+              id='email'
+              required
+            />
+            <label>Parola</label>
+            <input
+              className="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={handleChangePassword}
+              placeholder="Minim 8 caractere"
+              id="password"
+              required
+            />
+            <div className="buttons">
+              <Button type="submit">Conectare</Button>
+              
+            </div>
+
+          </form>
+          <p>{errorMessage}</p>
+        </div>
+      </div>
     </>
   );
 }

@@ -1,10 +1,14 @@
 import { LoginForm } from "@/components/login-form"
 import { AccountInfo } from "@/components/account-info"
+import { getAllArticles } from "@/lib/articles"
+import { useAuth } from "../context/authContext"
+import { LoginPageContent } from "@/components/login-page-content"
 
 export default function LoginPage() {
+  const articles = getAllArticles()
   return (
     <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
-      <AccountInfo/>
+      <LoginPageContent articles={articles} />
     </main>
   )
 }
