@@ -1,31 +1,33 @@
-import { useAuth } from "@/app/context/authContext";
+import { useAuth } from "@/app/context/authContext/supabase";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import "../styles/login-form.css"
-import { updateProfile } from "firebase/auth";
-import { auth } from "@/firebase";
+import "../styles/login-form.css";
+import { supabase } from "@/supabase-client";
 
 export function ChangeNameForm() {
-  const {setChangingName,changingName,currentUser,setUserName}=useAuth()
-  const [name,setName]=useState("")
+  const { setChangingName, changingName, currentUser, setUserName, userName } =
+    useAuth();
+  const [name, setName] = useState("");
+
   async function handleSubmitForm(formField: React.FormEvent<HTMLFormElement>) {
     formField.preventDefault();
-    try{
-      await updateProfile(auth.currentUser!,{displayName:name})
+    const { data: rows, error: selErr } = await supabase.from("users").select("user_id").eq("user_id", currentUser.id);
+    if (selErr) throw selErr;
+    if (rows && rows.length > 0) {
+      const { error: updErr } = await supabase.from("users").update({name: name,}).eq("user_id", currentUser.id);
+      if (updErr) throw updErr;
+    } else {
+      const { error: insErr } = await supabase.from("users").insert({user_id: currentUser.id,name: name,});
+      if (insErr) throw insErr;
     }
-    catch (error: unknown){
-      console.log(error)
-    }
-    finally{
-      setUserName(name)
-      setChangingName(false)
-    }
+    setUserName(name);
+    setChangingName(false);
   }
   function handleChangeName(formField: React.ChangeEvent<HTMLInputElement>) {
     setName(formField.target.value);
   }
-  function cancelNameChange(){
-    setChangingName(false)
+  function cancelNameChange() {
+    setChangingName(false);
   }
   return (
     <>
@@ -40,11 +42,16 @@ export function ChangeNameForm() {
               value={name}
               onChange={handleChangeName}
               placeholder="Nume de utilizator"
-              id='nume'
-              required/>
+              id="nume"
+              required
+            />
             <div className="buttons-change-name">
-              <Button type="submit">{currentUser?.displayName ? "Schimba Numele" : "Adauga Numele"}</Button>
-              <Button type="button" onClick={cancelNameChange}>Anuleaza</Button>
+              <Button type="submit">
+                {currentUser?.displayName ? "Schimba Numele" : "Adauga Numele"}
+              </Button>
+              <Button type="button" onClick={cancelNameChange}>
+                Anuleaza
+              </Button>
             </div>
           </form>
         </div>

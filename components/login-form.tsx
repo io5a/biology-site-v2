@@ -1,20 +1,13 @@
 "use client";
 
+import { supabase } from "@/supabase-client";
 import { useState } from "react";
-import { doSignInWithEmailAndPassword, doCreateUserWithEmailAndPassword } from "@/app/firebase/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useAuth } from "../app/context/authContext"
-import { error, log } from "console";
-import { auth } from "@/firebase";
-import { FirebaseError } from "firebase/app";
 import { errorHumanReadable } from "@/app/firebase/error-handling";
 import { Button } from "./ui/button";
 import "../styles/login-form.css"
+import { AuthError } from "@supabase/supabase-js";
 
 export function LoginForm() {
-  //console.log(useAuth)
-  // const { currentUser, userLoggedIn, loading } = useAuth();
-  //const {userLoggedIn}=useAuth() ?? undefined
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSigningIn,setIsSingingIn]=useState(false)
@@ -24,9 +17,6 @@ export function LoginForm() {
   function handleChangeMail(formField: React.ChangeEvent<HTMLInputElement>) {
     setEmail(formField.target.value);
   }
-  // function handleChangeName(formField: React.ChangeEvent<HTMLInputElement>) {
-  //   setName(formField.target.value);
-  // }
   
   function handleChangePassword(
     formField: React.ChangeEvent<HTMLInputElement>,
@@ -38,20 +28,24 @@ export function LoginForm() {
     formField.preventDefault();
     if(!isSigningIn){
       setIsSingingIn(true)
-      try {
-        await signInWithEmailAndPassword(auth, email, password)
-        //await updateProfile(auth.currentUser!,{displayName:name})
-        setErrorMessage("")
-      } catch (error: unknown) {
-        console.log(error)
-        setErrorMessage(
-          error instanceof FirebaseError  ? 
-          errorHumanReadable(error.code) : 
-          "Unable to sign in.",
-        )
-      } finally {
-        setIsSingingIn(false)
-      }
+      // setIsSingingIn(true)
+      // try {
+      //   await signInWithEmailAndPassword(auth, email, password)
+      //   //await updateProfile(auth.currentUser!,{displayName:name})
+      //   setErrorMessage("")
+      // } catch (error: unknown) {
+      //   console.log(error)
+      //   setErrorMessage(
+      //     error instanceof FirebaseError  ? 
+      //     errorHumanReadable(error.code) : 
+      //     "Unable to sign in.",
+      //   )
+      // } finally {
+      //   setIsSingingIn(false)
+      // }
+      const {error} = await supabase.auth.signInWithPassword({email,password})
+      setErrorMessage(error instanceof AuthError ? String(error.code) : "")
+      setIsSingingIn(false)
     }
     /**
      *     demo authentification
@@ -101,9 +95,7 @@ export function LoginForm() {
             />
             <div className="buttons">
               <Button type="submit">Conectare</Button>
-              
             </div>
-
           </form>
           <p>{errorMessage}</p>
         </div>

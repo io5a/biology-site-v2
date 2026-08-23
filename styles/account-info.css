@@ -114,3 +114,8 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+.articles input{
+  position:absolute;
+  
+}
