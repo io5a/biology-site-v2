@@ -1,12 +1,11 @@
-import { Button } from "./button"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 
 export function AccountArticle({name,shortDesc,slug}:{[key:string]:string}){
   function handleRedirect(){
 
   }
   return(
-    <Link href={"/articles/"+slug}>
+    <Link to={"/articles/"+slug}>
       <div className="article">
         <div className="article-title">
           <span className="preamble-article">

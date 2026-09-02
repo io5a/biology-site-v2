@@ -3,7 +3,7 @@
 import { AccountInfo } from "@/components/account-info"
 import { LoginForm } from "@/components/login-form"
 import type { Article } from "@/lib/articles"
-import { useAuth } from "@/app/context/authContext/supabase"
+import { useAuth } from "@/src/context/AuthContext"
 import { ChangeNameForm } from "./change-name"
 
 export function LoginPageContent({ articles }: { articles: Article[] }) {

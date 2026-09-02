@@ -2,7 +2,6 @@
 
 import { supabase } from "@/supabase-client";
 import { useState } from "react";
-import { errorHumanReadable } from "@/app/firebase/error-handling";
 import { Button } from "./ui/button";
 import "../styles/login-form.css"
 import { AuthError } from "@supabase/supabase-js";
@@ -43,8 +42,14 @@ export function LoginForm() {
       // } finally {
       //   setIsSingingIn(false)
       // }
-      const {error} = await supabase.auth.signInWithPassword({email,password})
-      setErrorMessage(error instanceof AuthError ? String(error.code) : "")
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      setErrorMessage(
+        error instanceof AuthError
+          ? "Autentificare eșuată. Verificați datele introduse."
+          : error
+            ? "A apărut o eroare la autentificare."
+            : "",
+      )
       setIsSingingIn(false)
     }
     /**

@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import Image from "next/image"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import type { Components } from "react-markdown"
@@ -39,31 +38,19 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           )
         },
         img: ({ src, alt }: { src?: string; alt?: string }) => {
-          // Normalize image paths
-          let imageSrc = typeof src === 'string' ? src : "/placeholder.svg"
-          
-          // Convert relative paths to absolute paths
+          let imageSrc = typeof src === "string" ? src : "/placeholder.svg"
+
           if (imageSrc.startsWith("../") || imageSrc.startsWith("./")) {
-            // Remove relative path markers and public folder references
             imageSrc = imageSrc.replace(/^(\.\.\/)+public\//, "/")
             imageSrc = imageSrc.replace(/^(\.\.\/)+/, "/")
             imageSrc = imageSrc.replace(/^\.\//, "/")
           }
-          
-          // Ensure it starts with / for absolute paths
+
           if (!imageSrc.startsWith("/") && !imageSrc.startsWith("http")) {
             imageSrc = "/" + imageSrc
           }
-          
-          return (
-            <Image 
-              src={imageSrc}
-              alt={alt || ""} 
-              width={800}
-              height={400}
-              className="my-6 rounded-lg border border-border" 
-            />
-          )
+
+          return <img src={imageSrc} alt={alt || ""} className="my-6 rounded-lg border border-border" />
         },
         a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
           <a

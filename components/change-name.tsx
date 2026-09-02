@@ -1,23 +1,25 @@
-import { useAuth } from "@/app/context/authContext/supabase";
+import { useAuth } from "@/src/context/AuthContext";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import "../styles/login-form.css";
 import { supabase } from "@/supabase-client";
 
 export function ChangeNameForm() {
-  const { setChangingName, changingName, currentUser, setUserName, userName } =
-    useAuth();
+  const { setChangingName, currentUser, setUserName, userName } = useAuth();
   const [name, setName] = useState("");
 
   async function handleSubmitForm(formField: React.FormEvent<HTMLFormElement>) {
     formField.preventDefault();
+
+    if (!currentUser) return;
+
     const { data: rows, error: selErr } = await supabase.from("users").select("user_id").eq("user_id", currentUser.id);
     if (selErr) throw selErr;
     if (rows && rows.length > 0) {
-      const { error: updErr } = await supabase.from("users").update({name: name,}).eq("user_id", currentUser.id);
+      const { error: updErr } = await supabase.from("users").update({ name }).eq("user_id", currentUser.id);
       if (updErr) throw updErr;
     } else {
-      const { error: insErr } = await supabase.from("users").insert({user_id: currentUser.id,name: name,});
+      const { error: insErr } = await supabase.from("users").insert({ user_id: currentUser.id, name });
       if (insErr) throw insErr;
     }
     setUserName(name);
@@ -47,7 +49,7 @@ export function ChangeNameForm() {
             />
             <div className="buttons-change-name">
               <Button type="submit">
-                {currentUser?.displayName ? "Schimba Numele" : "Adauga Numele"}
+                {userName ? "Schimba Numele" : "Adauga Numele"}
               </Button>
               <Button type="button" onClick={cancelNameChange}>
                 Anuleaza

@@ -2,7 +2,7 @@
 
 import "../styles/account-info.css"
 import { AccountArticle } from "./ui/account-article"
-import { useAuth } from "@/app/context/authContext/supabase"
+import { useAuth } from "@/src/context/AuthContext"
 import type { Article } from "@/lib/articles"
 import { Button } from "./ui/button"
 import { supabase } from "@/supabase-client"
@@ -10,12 +10,18 @@ import { supabase } from "@/supabase-client"
 
 
 export function AccountInfo({ articles }: { articles: Article[] }){
-  const { currentUser,setChangingName,userName} = useAuth();
-  async function logout(){
+  const { currentUser, setChangingName, userName } = useAuth();
+
+  async function logout() {
     await supabase.auth.signOut()
   }
-  const userId=currentUser.id
-  const pfpUrl=`https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/${userId}.webp`
+
+  if (!currentUser) {
+    return null
+  }
+
+  const userId = currentUser.id
+  const pfpUrl = `https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/${userId}.webp`
   return(
     <>
       <div className="account-center">
