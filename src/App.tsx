@@ -23,15 +23,15 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Navigation />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/articles" element={<ArticlesPage />} />
-            <Route path="/articles/:slug" element={<ArticleDetailPage />} />
-            <Route path="/announcements" element={<AnnouncementsPage />} />
-            <Route path="/learning" element={<LearningPage />} />
-            <Route path="/competitions" element={<CompetitionsPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/login-page" element={<LoginPage />} />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/articles" element={<ArticlesPage />} />
+              <Route path="/articles/:slug" element={<ArticleDetailPage />} />
+              <Route path="/announcements" element={<AnnouncementsPage />} />
+              <Route path="/learning" element={<LearningPage />} />
+              <Route path="/competitions" element={<CompetitionsPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/login-page" element={<LoginPage />} />
           </Routes>
         </AuthProvider>
       </QueryClientProvider>
