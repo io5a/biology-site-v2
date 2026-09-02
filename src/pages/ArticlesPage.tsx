@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Search } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/supabase-client'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/src/components/ui/skeleton'
 
 export interface Article {
   slug: string
@@ -23,34 +25,55 @@ function parseDate(dateString: string): Date {
   return new Date(NaN)
 }
 
+const fetchArticles = async () => {
+  const { data, error } = await supabase.from('articles').select('*').order('created_at', { ascending: false })
+
+  if (error) throw error
+
+  return (data ?? []).map((article: any) => ({
+    slug: article.slug ?? '',
+    title: article.title ?? '',
+    excerpt: article.excerpt ?? '',
+    category: article.category ?? '',
+    content: article.content ?? '',
+    date: article.created_at ? new Date(article.created_at).toDateString() : '',
+    readTime: '',
+  }))
+}
+
+function ArticleListSkeleton() {
+  return (
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Card key={index} className="flex flex-col">
+          <CardHeader>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <Skeleton className="h-6 w-20" />
+              <Skeleton className="h-4 w-14" />
+            </div>
+            <Skeleton className="h-7 w-4/5" />
+            <Skeleton className="mt-2 h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+          </CardHeader>
+          <CardContent className="mt-auto">
+            <div className="flex items-center justify-between gap-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-8 w-28" />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
 export default function ArticlesPage() {
-  const [articles, setArticles] = useState<Article[]>([])
+  const { data: articles = [], isLoading } = useQuery({
+    queryKey: ['articles'],
+    queryFn: fetchArticles,
+  })
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'title-asc' | 'title-desc'>('date-desc')
-
-  useEffect(() => {
-    const loadArticles = async () => {
-      const { data, error } = await supabase.from('articles').select('*').order('created_at', { ascending: false })
-      if (error) {
-        console.error(error)
-        return
-      }
-
-      const mapped = (data ?? []).map((article: any) => ({
-        slug: article.slug ?? '',
-        title: article.title ?? '',
-        excerpt: article.excerpt ?? '',
-        category: article.category ?? '',
-        content: article.content ?? '',
-        date: article.created_at ? new Date(article.created_at).toDateString() : '',
-        readTime: '',
-      }))
-
-      setArticles(mapped)
-    }
-
-    void loadArticles()
-  }, [])
 
   const sortedAndFilteredArticles = useMemo(() => {
     let filtered = articles
@@ -118,7 +141,9 @@ export default function ArticlesPage() {
           </div>
         </div>
 
-        {sortedAndFilteredArticles.length === 0 ? (
+        {isLoading ? (
+          <ArticleListSkeleton />
+        ) : sortedAndFilteredArticles.length === 0 ? (
           <div className="py-12 text-center">
             <p className="text-lg text-muted-foreground">Nu s-au găsit articole care să corespundă căutării.</p>
           </div>
