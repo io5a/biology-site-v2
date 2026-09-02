@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "export:articles": "node scripts/export-articles.mjs"
   },
   "dependencies": {
     "@better-upload/client": "^3.0.19",

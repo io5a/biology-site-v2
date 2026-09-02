@@ -50,7 +50,7 @@ const englishMonths: { [key: string]: number } = {
   dec: 11,
 }
 
-function parseDate(dateString: string): Date {
+export function parseDate(dateString: string): Date {
   // Try standard Date parsing first
   const standardDate = new Date(dateString)
   if (!isNaN(standardDate.getTime())) {
