@@ -1,4 +1,4 @@
-import type { Database } from "@/src/types";
+import { Database } from "../src/supabase.types";
 import { supabase } from "@/supabase-client";
 import { useState } from "react";
 

@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase-client";
-import type { Database } from "@/src/types";
+import { Database } from "../supabase.types";
 import { useQuery } from "@tanstack/react-query";
 import { LearningMat } from "@/components/learning-mat";
 
@@ -25,8 +25,10 @@ export default function LearningPage() {
   return (
     <>
       <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
-        <LearningPageHeader />
-        <LearningMat entries={entries} />
+        <div className="mx-auto max-w-7xl">
+          <LearningPageHeader />
+          <LearningMat entries={entries} />
+        </div>
       </main>
     </>
   );
