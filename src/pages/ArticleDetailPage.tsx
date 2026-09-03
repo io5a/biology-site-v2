@@ -32,6 +32,8 @@ export default function ArticleDetailPage() {
     queryKey: ['article', slug],
     enabled: Boolean(slug),
     queryFn: async () => {
+      if (!slug) return null
+
       const { data, error } = await supabase.from('articles').select('*').eq('slug', slug).maybeSingle()
 
       if (error) throw error
