@@ -6,8 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/src/components/ui/skeleton'
 import { supabase } from '@/supabase-client'
+import type { Database } from '@/src/supabase.types'
 
-const mapArticle = (article: any) => ({
+type ArticleRow = Database['public']['Tables']['articles']['Row']
+
+const mapArticle = (article: ArticleRow) => ({
   slug: article.slug ?? '',
   title: article.title ?? '',
   excerpt: article.excerpt ?? '',

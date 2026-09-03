@@ -18,14 +18,14 @@ export default function GalleryPage() {
     },
   })
   if(!isLoading)
-  return (
-    <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <GalleryHeader nrFoto={data?.objects.length}/>
-        <GalleryPhotos files={data?.objects.map((obj)=>({name:obj.name})) ?? []}/>
-      </div>
-    </main> 
-  );
+    return (
+      <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <GalleryHeader nrFoto={data?.objects.length}/>
+          <GalleryPhotos files={data?.objects.map((obj)=>({name:obj.name})) ?? []}/>
+        </div>
+      </main> 
+    );
 }
 
 function GalleryHeader({nrFoto = 0}:{nrFoto?:number}) {

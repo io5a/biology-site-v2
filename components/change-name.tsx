@@ -6,20 +6,39 @@ import { supabase } from "@/supabase-client";
 export function ChangeNameForm() {
   const { setChangingName, currentUser, setUserName, userName } = useAuth();
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmitForm(formField: React.FormEvent<HTMLFormElement>) {
     formField.preventDefault();
 
     if (!currentUser) return;
 
-    const { data: rows, error: selErr } = await supabase.from("users").select("user_id").eq("user_id", currentUser.id);
-    if (selErr) throw selErr;
+    const { data: rows, error: selErr } = await supabase
+      .from("users")
+      .select("user_id")
+      .eq("user_id", currentUser.id);
+    if (selErr) {
+      setError(String(selErr?.message));
+      throw selErr;
+    }
     if (rows && rows.length > 0) {
-      const { error: updErr } = await supabase.from("users").update({ name }).eq("user_id", currentUser.id);
-      if (updErr) throw updErr;
+      const { error: updErr } = await supabase
+        .from("users")
+        .update({ name })
+        .eq("user_id", currentUser.id);
+      if (updErr) {
+        if(updErr.code==="23505")
+          setError("Nume deja luat. Incearca altul.");
+        throw updErr;
+      }
     } else {
-      const { error: insErr } = await supabase.from("users").insert({ user_id: currentUser.id, name });
-      if (insErr) throw insErr;
+      const { error: insErr } = await supabase
+        .from("users")
+        .insert({ user_id: currentUser.id, name });
+      if (insErr) {
+        setError(String(insErr.message))
+        throw insErr;
+      }
     }
     setUserName(name);
     setChangingName(false);
@@ -47,6 +66,7 @@ export function ChangeNameForm() {
               id="nume"
               required
             />
+            <div className="mt-2">{error}</div>
             <div className="mt-5 flex items-center justify-between">
               <Button type="submit">
                 {userName ? "Schimba Numele" : "Adauga Numele"}
