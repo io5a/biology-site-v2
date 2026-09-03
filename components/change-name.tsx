@@ -1,7 +1,6 @@
 import { useAuth } from "@/src/context/AuthContext";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import "../styles/login-form.css";
 import { supabase } from "@/supabase-client";
 
 export function ChangeNameForm() {
@@ -33,12 +32,13 @@ export function ChangeNameForm() {
   }
   return (
     <>
-      <div className="form-center">
-        <div className="form">
+      <div className="flex h-175 items-center justify-center">
+        <div className="flex w-1/4 flex-col items-center justify-center rounded-[10px] bg-[rgb(7,45,24)] px-5 py-6.25">
           <div>Modifica numele</div>
-          <form className="form-fields" onSubmit={handleSubmitForm}>
-            <label>Nume</label>
+          <form className="flex w-full flex-col" onSubmit={handleSubmitForm}>
+            <label className="mt-2.5">Nume</label>
             <input
+              className="rounded-[5px] border-2 border-[#79877c] p-1"
               name="nume"
               type="text"
               value={name}
@@ -47,7 +47,7 @@ export function ChangeNameForm() {
               id="nume"
               required
             />
-            <div className="buttons-change-name">
+            <div className="mt-5 flex items-center justify-between">
               <Button type="submit">
                 {userName ? "Schimba Numele" : "Adauga Numele"}
               </Button>
