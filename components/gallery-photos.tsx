@@ -17,7 +17,6 @@ export function GalleryPhotos({ files }: { files: Array<{ name: string }> }) {
 
 function Photo({ file, url }: { file: { path: string }; url: string }) {
   const fileName = file.path.slice(file.path.indexOf("/") + 1);
-  console.log(url + file.path);
   return (
     <div className="bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm group flex flex-col overflow-hidden transition-all hover:border-primary/50">
       <div className="aspect-square overflow-hidden bg-secondary">

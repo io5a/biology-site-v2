@@ -28,7 +28,6 @@ function Competition({ comp }: { comp: CompetitionType }) {
     10: "Noiembrie",
     11: "Decembrie",
   };
-  console.log(comp.title, compDate.getDay());
   let inFuture: boolean = false;
   if (new Date().getTime() < compDate.getTime()) inFuture = true;
   return (
