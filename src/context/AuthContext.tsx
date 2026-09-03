@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '@/supabase-client'
+import { supabase, supabaseConfigured } from '@/supabase-client'
 import type { User } from '@supabase/supabase-js'
 
 type AuthContextValue = {
@@ -41,8 +41,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const initialize = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      await syncUser(user)
+      if (!supabaseConfigured) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        await syncUser(user)
+      } catch {
+        if (active) setLoading(false)
+      }
     }
 
     void initialize()
