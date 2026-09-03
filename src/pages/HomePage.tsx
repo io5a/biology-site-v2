@@ -9,21 +9,29 @@ import { supabase } from '@/supabase-client'
 import type { Database } from '@/src/supabase.types'
 
 type ArticleRow = Database['public']['Tables']['articles']['Row']
+type ArticleQueryRow = ArticleRow & {
+  author?: { name: string } | { name: string }[] | null
+}
 
-const mapArticle = (article: ArticleRow) => ({
-  slug: article.slug ?? '',
-  title: article.title ?? '',
-  excerpt: article.excerpt ?? '',
-  category: article.category ?? '',
-  content: article.content ?? '',
-  date: article.created_at ? new Date(article.created_at).toDateString() : '',
-  readTime: '',
-})
+const mapArticle = (article: ArticleQueryRow) => {
+  const authorRelation = Array.isArray(article.author) ? article.author[0] : article.author
+
+  return {
+    slug: article.slug ?? '',
+    title: article.title ?? '',
+    excerpt: article.excerpt ?? '',
+    category: article.category ?? '',
+    content: article.content ?? '',
+    date: article.created_at ? new Date(article.created_at).toDateString() : '',
+    readTime: '',
+    authorName: authorRelation?.name ?? null,
+  }
+}
 
 const fetchFeaturedArticles = async () => {
   const { data, error } = await supabase
     .from('articles')
-    .select('*')
+    .select('*, author:users(name)')
     .order('created_at', { ascending: false })
     .limit(3)
 
@@ -174,7 +182,9 @@ export default function HomePage() {
                     <CardHeader>
                       <div className="mb-2 flex items-center justify-between">
                         <Badge>{article.category}</Badge>
-                        <span className="text-xs text-muted-foreground">{article.readTime}</span>
+                        <span className="text-xs text-muted-foreground">
+                          Autor: {article.authorName ?? 'anonim'}
+                        </span>
                       </div>
                       <CardTitle className="text-balance text-xl">{article.title}</CardTitle>
                       <CardDescription className="text-pretty">{article.excerpt}</CardDescription>
