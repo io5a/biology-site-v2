@@ -3,7 +3,6 @@
 import { supabase } from "@/supabase-client";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import "../styles/login-form.css"
 import { AuthError } from "@supabase/supabase-js";
 
 export function LoginForm() {
@@ -64,11 +63,11 @@ export function LoginForm() {
 
   return (
     <>
-      <div className="form-center">
-        <div className="form">
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="flex lg:w-1/4 md:w-1/2 w-3/4 flex-col items-center justify-center rounded-[10px] bg-[rgb(7,45,24)] px-5 py-6.25">
           <div>Conecteaza-te</div>
-          <form className="form-fields" onSubmit={handleSubmitForm}>
-            {/* <label>Nume</label>
+          <form className="flex w-full flex-col" onSubmit={handleSubmitForm}>
+            {/* <label className="mt-2.5">Nume</label>
             <input
               name="nume"
               type="text"
@@ -77,8 +76,9 @@ export function LoginForm() {
               placeholder="Nume de utilizator"
               id='email'
               required/> */}
-            <label>Email</label>
+            <label className="mt-2.5">Email</label>
             <input
+              className="rounded-[5px] border-2 border-[#79877c] p-1"
               name="email"
               type="text"
               value={email}
@@ -87,9 +87,9 @@ export function LoginForm() {
               id='email'
               required
             />
-            <label>Parola</label>
+            <label className="mt-2.5">Parola</label>
             <input
-              className="password"
+              className="password rounded-[5px] border-2 border-[#79877c] p-1"
               name="password"
               type="password"
               value={password}
@@ -98,7 +98,7 @@ export function LoginForm() {
               id="password"
               required
             />
-            <div className="buttons">
+            <div className="mt-5 flex items-center justify-between">
               <Button type="submit">Conectare</Button>
             </div>
           </form>

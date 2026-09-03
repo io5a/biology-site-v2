@@ -59,9 +59,9 @@ function Competition({ comp }: { comp: CompetitionType }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-calendar h-3 w-3"
               data-darkreader-inline-stroke=""
             >
@@ -82,9 +82,9 @@ function Competition({ comp }: { comp: CompetitionType }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-map-pin h-3 w-3"
               data-darkreader-inline-stroke=""
             >
@@ -119,9 +119,9 @@ function Competition({ comp }: { comp: CompetitionType }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-earth h-3 w-3"
             >
               <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path>

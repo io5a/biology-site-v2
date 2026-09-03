@@ -10,6 +10,8 @@ import LearningPage from "@/src/pages/LearningPage";
 import CompetitionsPage from "@/src/pages/CompetitionsPage";
 import GalleryPage from "@/src/pages/GalleryPage";
 import LoginPage from "@/src/pages/LoginPage";
+import { SpeedInsights } from "@vercel/speed-insights/react"
+import { Analytics } from "@vercel/analytics/react"
 import {
   QueryClient,
   QueryClientProvider,
@@ -34,6 +36,8 @@ export default function App() {
               <Route path="/login-page" element={<LoginPage />} />
           </Routes>
         </AuthProvider>
+        <SpeedInsights/>
+        <Analytics />
       </QueryClientProvider>
     </ThemeProvider>
   );

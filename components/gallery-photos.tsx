@@ -3,20 +3,47 @@ import { supabase } from "@/supabase-client";
 export function GalleryPhotos({ files }: { files: Array<{ name: string }> }) {
   const supabaseUrl = supabase.storage.from("gallery").getPublicUrl("")
     .data.publicUrl;
-
   return (
     <>
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {files.map((file)=>{
-        return <Photo key={file.name} file={{ path: file.name }} url={supabaseUrl}></Photo>
-      })}
-    </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {files.map((file) => {
+          return (
+            <Photo
+              key={file.name}
+              file={{ path: file.name }}
+              url={supabaseUrl}
+            ></Photo>
+          );
+        })}
+      </div>
     </>
   );
 }
 
 function Photo({ file, url }: { file: { path: string }; url: string }) {
   const fileName = file.path.slice(file.path.indexOf("/") + 1);
+
+  async function handleDownload() {
+    const { data, error } = await supabase.storage
+      .from("gallery")
+      .download(file.path);
+    if (error) {
+      console.error("Download failed:", error);
+      return;
+    }
+
+    const downloadUrl = URL.createObjectURL(data);
+    const link = document.createElement("a");
+
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(downloadUrl);
+  }
+
   return (
     <div className="bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm group flex flex-col overflow-hidden transition-all hover:border-primary/50">
       <div className="aspect-square overflow-hidden bg-secondary">
@@ -32,10 +59,10 @@ function Photo({ file, url }: { file: { path: string }; url: string }) {
         <h3 className="mb-3 text-balance font-semibold text-foreground">
           {fileName}
         </h3>
-        <a
-          href={url + file.path}
-          className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-8 rounded-md px-3 has-[&gt;svg]:px-2.5 mt-auto gap-1 bg-transparent"
-        >
+        <button 
+        type="button"
+        onClick={handleDownload}
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-8 rounded-md px-3 has-[&gt;svg]:px-2.5 mt-auto gap-1 bg-transparent">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -43,9 +70,9 @@ function Photo({ file, url }: { file: { path: string }; url: string }) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-download h-3 w-3"
           >
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -53,7 +80,7 @@ function Photo({ file, url }: { file: { path: string }; url: string }) {
             <line x1="12" x2="12" y1="15" y2="3"></line>
           </svg>
           Download
-        </a>
+        </button>
       </div>
     </div>
   );
