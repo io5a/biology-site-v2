@@ -10,7 +10,6 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [isSigningIn,setIsSingingIn]=useState(false)
   const [errorMessage,setErrorMessage]=useState("")
-  //const [name,setName]=useState('')
 
   function handleChangeMail(formField: React.ChangeEvent<HTMLInputElement>) {
     setEmail(formField.target.value);
@@ -26,21 +25,6 @@ export function LoginForm() {
     formField.preventDefault();
     if(!isSigningIn){
       setIsSingingIn(true)
-      // setIsSingingIn(true)
-      // try {
-      //   await signInWithEmailAndPassword(auth, email, password)
-      //   //await updateProfile(auth.currentUser!,{displayName:name})
-      //   setErrorMessage("")
-      // } catch (error: unknown) {
-      //   console.log(error)
-      //   setErrorMessage(
-      //     error instanceof FirebaseError  ? 
-      //     errorHumanReadable(error.code) : 
-      //     "Unable to sign in.",
-      //   )
-      // } finally {
-      //   setIsSingingIn(false)
-      // }
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       setErrorMessage(
         error instanceof AuthError
@@ -51,31 +35,15 @@ export function LoginForm() {
       )
       setIsSingingIn(false)
     }
-    /**
-     *     demo authentification
-    const isAuthenticated = await login({ username, password });
-    if(isAuthenticated)
-      console.log("Login succesful")
-    else
-      console.log("Login not succesful")
-     */
+    
   }
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex h-[calc(100vh-80px)] items-center justify-center">
         <div className="flex lg:w-1/4 md:w-1/2 w-3/4 flex-col items-center justify-center rounded-[10px] bg-[rgb(7,45,24)] px-5 py-6.25">
           <div>Conecteaza-te</div>
           <form className="flex w-full flex-col" onSubmit={handleSubmitForm}>
-            {/* <label className="mt-2.5">Nume</label>
-            <input
-              name="nume"
-              type="text"
-              value={name}
-              onChange={handleChangeName}
-              placeholder="Nume de utilizator"
-              id='email'
-              required/> */}
             <label className="mt-2.5">Email</label>
             <input
               className="rounded-[5px] border-2 border-[#79877c] p-1"

@@ -32,8 +32,8 @@ export function ChangeNameForm() {
   }
   return (
     <>
-      <div className="flex h-175 items-center justify-center">
-        <div className="flex w-1/4 flex-col items-center justify-center rounded-[10px] bg-[rgb(7,45,24)] px-5 py-6.25">
+      <div className="flex h-[calc(100vh-80px)] items-center justify-center">
+        <div className="flex sm:w-1/3 w-3/4 flex-col items-center justify-center rounded-[10px] bg-[rgb(7,45,24)] px-5 py-6.25">
           <div>Modifica numele</div>
           <form className="flex w-full flex-col" onSubmit={handleSubmitForm}>
             <label className="mt-2.5">Nume</label>
