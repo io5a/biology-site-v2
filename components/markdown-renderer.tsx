@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Components } from "react-markdown";
@@ -75,19 +75,14 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       );
     },
     img: ({ src, alt }: { src?: string; alt?: string }) => {
-      let imageSrc = typeof src === "string" ? src : "/placeholder.svg";
-      imageSrc = imageSrc.slice(9);
-      const {data,isLoading}=useQuery({
-        queryKey:[imageSrc],
-        queryFn: ()=> supabase.storage.from("gallery").getPublicUrl(imageSrc),
-        
-      }) 
-      if(!isLoading)
-        imageSrc=data?.data.publicUrl ?? ""
+      const storagePath = src?.replace(/^\/gallery\//, "") ?? "";
+      const { data } = supabase.storage
+        .from("gallery")
+        .getPublicUrl(storagePath);
 
       return (
         <img
-          src={imageSrc}
+          src={data.publicUrl}
           alt={alt || ""}
           className="my-6 rounded-lg border border-border"
         />
