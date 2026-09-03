@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BioART
 
-## Getting Started
+BioART is a Romanian biology education platform built with React and Vite. It brings together biology articles, announcements, learning materials, competitions, and a photo gallery in one responsive web app.
 
-First, run the development server:
+The application uses Supabase for content and authentication, React Router for navigation, and Markdown files as the editable source for several content collections.
+
+## Features
+
+- Home page with recent articles and announcements
+- Article listing and individual Markdown-rendered article pages
+- Announcements, competitions, learning materials, and gallery sections
+- Supabase-backed data fetching with TanStack Query
+- Optional account and login flows
+- Light and dark themes
+- Vercel-ready single-page application routing
+
+## Tech stack
+
+- React 19 and TypeScript
+- Vite
+- React Router
+- Tailwind CSS and Radix UI components
+- Supabase (`@supabase/supabase-js`)
+- TanStack Query
+- React Markdown with GitHub Flavored Markdown support
+
+## Getting started
+
+### Requirements
+
+- Node.js 20 or newer
+- A Supabase project for live data and authentication
+
+### Install and run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The development server runs at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env` file in the project root with the public Supabase values for your project:
 
-## Learn More
+```dotenv
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
 
-To learn more about Next.js, take a look at the following resources:
+These variables are exposed to the browser by Vite, so use only Supabase’s publishable key. Never put a service-role key in `.env` or frontend code.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```text
+src/
+	pages/       Route-level page components
+	components/  Shared application components
+	context/     Authentication context
+	types.ts     Shared TypeScript types
+components/    Reusable UI and feature components
+lib/           Shared utilities and types
+supabase/      Supabase migrations and configuration
+```
 
-## Deploy on Vercel
+Main routes are `/`, `/articles`, `/articles/:slug`, `/announcements`, `/learning`, `/competitions`, `/gallery`, and `/login-page`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Type-check and build the production bundle |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+
+## Production deployment
+
+The project is configured for Vercel:
+
+```bash
+npm run build
+```
+
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in the Vercel project environment variables. The included `vercel.json` publishes `dist` and rewrites application routes to `index.html` so React Router works on direct navigation.
