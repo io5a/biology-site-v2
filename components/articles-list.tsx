@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -191,7 +191,7 @@ export function ArticlesList({ articles }: ArticlesListProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{article.date}</span>
                   <Button asChild variant="ghost" size="sm" className="gap-1">
-                    <Link href={`/articles/${article.slug}`}>
+                    <Link to={`/articles/${article.slug}`}>
                       Citește mai mult
                       <ArrowRight className="h-3 w-3" />
                     </Link>

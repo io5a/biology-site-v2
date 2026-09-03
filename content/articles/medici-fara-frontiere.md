@@ -4,6 +4,6 @@ excerpt: 'Médecins Sans Frontières (MSF), cunoscută în română drept Medici
 category: "Informational"
 date: "15 Aprilie 2026"
 ---
-![](/gallery/medici-fara-frontiere/Médecins-Sans-Frontières-1-of-3.webp)
-![](/gallery/medici-fara-frontiere/Médecins-Sans-Frontières-2-of-3.webp)
-![](/gallery/medici-fara-frontiere/Médecins-Sans-Frontières-3-of-3.webp)
+![](/gallery/medici-fara-frontiere/Medecins-Sans-Frontieres-1-of-3.webp)
+![](/gallery/medici-fara-frontiere/Medecins-Sans-Frontieres-2-of-3.webp)
+![](/gallery/medici-fara-frontiere/Medecins-Sans-Frontieres-3-of-3.webp)

@@ -1,0 +1,121 @@
+.account-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: 900px;
+}
+
+.account-details{
+  border-width: 1px;
+  background-color:#0E150A;
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  padding: 30px;
+  width: 70%;
+  height: 90%;
+  border-radius: 20px;
+}
+
+.account-info{
+  /* background-color: 182212; */
+  background-color: #1a331e;
+  display:flex;
+  flex-direction: column;
+  justify-content:space-evenly;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+  border-radius: 20px;
+  overflow-wrap:anywhere;
+}
+
+.articles-written{
+  /* background-color: 182212; */
+  
+  padding: 20px;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.articles-written .articles-title{
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.title-break{
+  /* rgb(180, 180, 180) */
+  /* 245C2D */
+  border: 1px solid rgb(180, 180, 180);
+  margin-top:5px;
+}
+
+.profile-pic{
+  border-radius: 50%;
+  height: 300px;
+  width: 300px;
+}
+
+.mail{
+  font-size: 25px;
+}
+
+.number-articles{
+  font-size: 20px;
+}
+
+.articles{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow:scroll;
+}
+
+.article{
+  background-color: #1a331e;
+  margin-top: 20px;
+  padding:10px;
+  border-radius: 13px;
+  cursor: pointer;
+  border-width: 1px;
+}
+
+.article:hover{
+  border-color: #3c9b64;
+}
+
+.article-title{
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+
+.preamble-article{
+  font-weight: bold;
+  color:rgb(180, 180, 180)
+}
+
+.article-line-break{
+  margin-bottom: 8px;
+  border: 1px solid rgb(180, 180, 180);
+
+}
+
+.name{
+  font-size: 25px;
+}
+
+.buttons{
+  width: 70%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.articles input{
+  position:absolute;
+  
+}
