@@ -7,9 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint .",
-    "export:articles": "node scripts/export-articles.mjs",
-    "export:competitions": "node scripts/export-competitions.mjs"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@better-upload/client": "^3.0.19",
@@ -50,9 +48,7 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
     "date-fns": "4.1.0",
-    "dotenv": "^17.4.2",
     "embla-carousel-react": "8.5.1",
-    "gray-matter": "^4.0.3",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
     "react": "^19.2.1",

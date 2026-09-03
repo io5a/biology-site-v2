@@ -3,7 +3,7 @@
 import "../styles/account-info.css"
 import { AccountArticle } from "./ui/account-article"
 import { useAuth } from "@/src/context/AuthContext"
-import type { Article } from "@/lib/articles"
+import type { Article } from "@/src/types"
 import { Button } from "./ui/button"
 import { supabase } from "@/supabase-client"
 
