@@ -2,7 +2,6 @@
 
 import { AccountArticle } from "./ui/account-article";
 import { useAuth } from "@/src/context/AuthContext";
-import type { Article } from "@/src/types";
 import { Button } from "./ui/button";
 import { supabase } from "@/supabase-client";
 import { useQuery } from "@tanstack/react-query";
@@ -30,8 +29,19 @@ export function AccountInfo() {
         .order("created_at", { ascending: false }),
   });
   const articles = data?.data ?? [];
+  
+  let pfpUrl = `https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/${userId}.webp`;
+  const {data:pfpExists,isLoading:isLoadingPfp} = useQuery({
+    queryKey: ["pfp", userId],
+    queryFn: async () => {
+      const { data, error } = await supabase.storage.from("avatars").exists(`${userId}.webp`);
+      return data;
+    }
+  });
+  if(!isLoadingPfp && !pfpExists){
+    pfpUrl = `https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/default.webp`;
+  }
 
-  const pfpUrl = `https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/${userId}.webp`;
   return (
     <>
       <div className="max-[1200px]:hidden flex h-[calc(100vh-80px)] items-center justify-center p-0 ">
@@ -97,7 +107,7 @@ export function AccountInfo() {
               </div>
             </div>
           </div> : (<Skeleton className="w-full h-1/4 mt-4 rounded-2xl px-2"></Skeleton>)}
-          {!isLoading ? (
+          {!isLoading ? (articles.length > 0 && (
             <div className="flex h-full flex-col overflow-scroll bg-[#08250d] mt-4 rounded-2xl px-2">
               {articles.map((Article) => {
                 return (
@@ -110,7 +120,7 @@ export function AccountInfo() {
                 );
               })}
             </div>
-          ) : (
+          )) : (
             <Skeleton className="w-full h-full mt-4 rounded-2xl px-2"></Skeleton>
           )}
           <div className="w-full p-4 md:p-7 bg-[#1a331e] rounded-2xl mt-3">

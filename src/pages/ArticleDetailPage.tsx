@@ -34,7 +34,11 @@ export default function ArticleDetailPage() {
     queryFn: async () => {
       if (!slug) return null
 
-      const { data, error } = await supabase.from('articles').select('*').eq('slug', slug).maybeSingle()
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*, author:users(name)')
+        .eq('slug', slug)
+        .maybeSingle()
 
       if (error) throw error
 
@@ -61,6 +65,7 @@ export default function ArticleDetailPage() {
           <p className="mb-2 text-sm uppercase tracking-[0.2em] text-muted-foreground">{article.category}</p>
           <h1 className="text-4xl font-bold text-foreground">{article.title}</h1>
           <p className="mt-3 text-muted-foreground">{new Date(article.created_at).toDateString()}</p>
+          <p className="text-muted-foreground">Autor: {article.author?.name ?? 'anonim'}</p>
         </header>
         <MarkdownRenderer content={article.content ?? ''} />
       </article>

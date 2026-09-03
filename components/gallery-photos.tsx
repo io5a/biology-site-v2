@@ -3,6 +3,7 @@ import { supabase } from "@/supabase-client";
 export function GalleryPhotos({ files }: { files: Array<{ name: string }> }) {
   const supabaseUrl = supabase.storage.from("gallery").getPublicUrl("")
     .data.publicUrl;
+  console.log(files)
   return (
     <>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -43,7 +44,6 @@ function Photo({ file, url }: { file: { path: string }; url: string }) {
 
     URL.revokeObjectURL(downloadUrl);
   }
-
   return (
     <div className="bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm group flex flex-col overflow-hidden transition-all hover:border-primary/50">
       <div className="aspect-square overflow-hidden bg-secondary">

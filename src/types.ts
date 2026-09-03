@@ -7,13 +7,3 @@ export type AnnouncementType = {
   title: string
   type: string
 };
-
-export type Article = {
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  date: string
-  readTime: string
-  content: string
-}

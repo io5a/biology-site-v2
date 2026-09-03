@@ -16,7 +16,7 @@ export type Database = {
     Tables: {
       announcements: {
         Row: {
-          author_id: string | null
+          author_id: string
           content: string | null
           created_at: string
           date: string | null
@@ -25,7 +25,7 @@ export type Database = {
           type: string | null
         }
         Insert: {
-          author_id?: string | null
+          author_id?: string
           content?: string | null
           created_at?: string
           date?: string | null
@@ -34,7 +34,7 @@ export type Database = {
           type?: string | null
         }
         Update: {
-          author_id?: string | null
+          author_id?: string
           content?: string | null
           created_at?: string
           date?: string | null
@@ -54,7 +54,7 @@ export type Database = {
       }
       articles: {
         Row: {
-          author_id: string | null
+          author_id: string
           category: string | null
           content: string | null
           created_at: string
@@ -65,7 +65,7 @@ export type Database = {
           title: string | null
         }
         Insert: {
-          author_id?: string | null
+          author_id?: string
           category?: string | null
           content?: string | null
           created_at?: string
@@ -76,7 +76,7 @@ export type Database = {
           title?: string | null
         }
         Update: {
-          author_id?: string | null
+          author_id?: string
           category?: string | null
           content?: string | null
           created_at?: string
@@ -132,27 +132,6 @@ export type Database = {
         }
         Relationships: []
       }
-      gallery_images: {
-        Row: {
-          created_at: string
-          filename: string | null
-          id: number
-          storage_path: string | null
-        }
-        Insert: {
-          created_at?: string
-          filename?: string | null
-          id?: number
-          storage_path?: string | null
-        }
-        Update: {
-          created_at?: string
-          filename?: string | null
-          id?: number
-          storage_path?: string | null
-        }
-        Relationships: []
-      }
       learning_materials: {
         Row: {
           created_at: string
@@ -185,19 +164,16 @@ export type Database = {
       }
       users: {
         Row: {
-          avatar_url: string | null
           created_at: string
           name: string
           user_id: string
         }
         Insert: {
-          avatar_url?: string | null
           created_at?: string
-          name: string
+          name?: string
           user_id?: string
         }
         Update: {
-          avatar_url?: string | null
           created_at?: string
           name?: string
           user_id?: string
