@@ -81,6 +81,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       tooltip,
       showTooltip = true,
       shortcutKeys,
+      onMouseDown,
       variant,
       size,
       role,
@@ -98,6 +99,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const buttonAriaChecked = isCheckVariant
       ? (ariaChecked ?? false)
       : ariaChecked
+    const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
+      onMouseDown?.(event)
+      event.preventDefault()
+    }
     const shortcuts = useMemo<string[]>(
       () => parseShortcutKeys({ shortcutKeys }),
       [shortcutKeys]
@@ -124,6 +129,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           data-variant={isCheckVariant ? "check" : undefined}
           role={buttonRole}
           aria-checked={buttonAriaChecked}
+          onMouseDown={handleMouseDown}
           {...props}
         >
           {content}
@@ -142,6 +148,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           data-variant={isCheckVariant ? "check" : undefined}
           role={buttonRole}
           aria-checked={buttonAriaChecked}
+          onMouseDown={handleMouseDown}
           {...props}
         >
           {content}
