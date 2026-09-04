@@ -309,27 +309,14 @@ export function useColorHighlight(config: UseColorHighlightConfig) {
       return false
 
     if (mode === "mark") {
-      if (editor.state.storedMarks) {
-        const highlightMarkType = editor.schema.marks.highlight
-        if (highlightMarkType) {
-          editor.view.dispatch(
-            editor.state.tr.removeStoredMark(highlightMarkType)
-          )
-        }
+      const success = editor
+        .chain()
+        .focus()
+        .toggleHighlight({ color: actualColor })
+        .run()
+      if (success) {
+        onApplied?.({ color: actualColor, label, mode })
       }
-
-      setTimeout(() => {
-        const success = editor
-          .chain()
-          .focus()
-          .toggleHighlight({ color: actualColor })
-          .run()
-        if (success) {
-          onApplied?.({ color: actualColor, label, mode })
-        }
-        return success
-      }, 0)
-
       return true
     } else {
       const success = editor

@@ -100,6 +100,8 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 const SEARCH_AND_REPLACE_SCROLL_OPTIONS: ScrollIntoViewOptions = {
   block: "center",
 };
+const AUTOSAVE_DELAY_MS = 1000;
+type AutoSaveStatus = "idle" | "saving" | "saved" | "error";
 
 function getPastedImageFiles(event: ClipboardEvent): File[] {
   const clipboardData = event.clipboardData;
@@ -304,8 +306,11 @@ const MobileToolbarContent = ({
 }: {
   type: "highlighter" | "link";
   onBack: () => void;
-}) => (
-  <>
+}) => {
+  const { editor } = useCurrentEditor();
+
+  return (
+    <>
     <ToolbarGroup>
       <Button variant="ghost" onClick={onBack}>
         <ArrowLeftIcon className="tiptap-button-icon" />
@@ -320,17 +325,19 @@ const MobileToolbarContent = ({
     <ToolbarSeparator />
 
     {type === "highlighter" ? (
-      <ColorHighlightPopoverContent />
+      <ColorHighlightPopoverContent editor={editor} />
     ) : (
-      <LinkContent />
+      <LinkContent editor={editor} />
     )}
-  </>
-);
+    </>
+  );
+};
 
 type SimpleEditorProps = {
   initialContent: JSONContent;
   isEditing: boolean;
   onSaveDraft: (document: JSONContent) => Promise<string | null>;
+  onAutoSaveDraft: (document: JSONContent) => Promise<string | null>;
   onPublish: (document: JSONContent) => Promise<string | null>;
   onBack: () => void;
 };
@@ -339,6 +346,7 @@ export function SimpleEditor({
   initialContent,
   isEditing,
   onSaveDraft,
+  onAutoSaveDraft,
   onPublish,
   onBack,
 }: SimpleEditorProps) {
@@ -351,9 +359,14 @@ export function SimpleEditor({
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [autoSaveStatus, setAutoSaveStatus] = useState<AutoSaveStatus>("idle");
   const toolbarRef = useRef<HTMLDivElement>(null);
   const searchAndReplaceButtonRef = useRef<HTMLButtonElement | null>(undefined);
   const editorRef = useRef<Editor | null>(null);
+  const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const latestDocumentRef = useRef<JSONContent | null>(null);
+  const saveInFlightRef = useRef(false);
+  const saveQueuedRef = useRef(false);
 
   async function insertPastedImages(files: File[]) {
     const currentEditor = editorRef.current;
@@ -398,6 +411,71 @@ export function SimpleEditor({
       }
     }
   }
+
+  const runAutoSave = useCallback(async () => {
+    const document = latestDocumentRef.current;
+    if (!document) return;
+
+    if (saveInFlightRef.current) {
+      saveQueuedRef.current = true;
+      return;
+    }
+
+    saveInFlightRef.current = true;
+    setIsSaving(true);
+    setAutoSaveStatus("saving");
+
+    let result: string | null;
+    try {
+      result = await onAutoSaveDraft(document);
+    } catch (error) {
+      result = getErrorMessage(error, "Draftul nu a putut fi salvat automat.");
+    }
+
+    saveInFlightRef.current = false;
+    setIsSaving(false);
+
+    if (result) {
+      setActionError(result);
+      setAutoSaveStatus("error");
+    } else if (latestDocumentRef.current === document) {
+      setIsDirty(false);
+      setAutoSaveStatus("saved");
+    } else {
+      setAutoSaveStatus("idle");
+    }
+
+    const hasNewerDocument = latestDocumentRef.current !== document;
+    const shouldRetry = saveQueuedRef.current || hasNewerDocument;
+    saveQueuedRef.current = false;
+
+    if (shouldRetry && latestDocumentRef.current) {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+      }
+
+      autoSaveTimerRef.current = setTimeout(() => {
+        autoSaveTimerRef.current = null;
+        void runAutoSave();
+      }, AUTOSAVE_DELAY_MS);
+    }
+  }, [onAutoSaveDraft]);
+
+  const queueAutoSave = useCallback(
+    (document: JSONContent) => {
+      latestDocumentRef.current = document;
+
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+      }
+
+      autoSaveTimerRef.current = setTimeout(() => {
+        autoSaveTimerRef.current = null;
+        void runAutoSave();
+      }, AUTOSAVE_DELAY_MS);
+    },
+    [runAutoSave],
+  );
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -474,13 +552,33 @@ export function SimpleEditor({
       }),
     ],
     content: initialContent,
-    onUpdate: () => {
-      setIsDirty(true);
-      setActionError(null);
-    },
   });
 
   editorRef.current = editor;
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleEditorUpdate = () => {
+      setIsDirty(true);
+      setActionError(null);
+      setAutoSaveStatus("idle");
+      queueAutoSave(editor.getJSON());
+    };
+
+    editor.on("update", handleEditorUpdate);
+    return () => {
+      editor.off("update", handleEditorUpdate);
+    };
+  }, [editor, queueAutoSave]);
+
+  useEffect(() => {
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+      }
+    };
+  }, []);
 
   const rect = useCursorVisibility({
     editor,
@@ -513,30 +611,74 @@ export function SimpleEditor({
   }, [closeSearchAndReplace, isSearchAndReplaceOpen, openSearchAndReplace]);
 
   async function handleSaveDraft() {
-    if (!editor || isSaving) return;
+    if (!editor || saveInFlightRef.current) return;
+
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+      autoSaveTimerRef.current = null;
+    }
+
+    const document = editor.getJSON();
+    latestDocumentRef.current = document;
+    saveInFlightRef.current = true;
 
     setIsSaving(true);
     setActionError(null);
-    const result = await onSaveDraft(editor.getJSON());
+    setAutoSaveStatus("saving");
+
+    let result: string | null;
+    try {
+      result = await onSaveDraft(document);
+    } catch (error) {
+      result = getErrorMessage(error, "Draftul nu a putut fi salvat.");
+    }
+
+    saveInFlightRef.current = false;
     setIsSaving(false);
 
     if (result) {
       setActionError(result);
+      setAutoSaveStatus("error");
+      queueAutoSave(document);
       return;
     }
 
     setIsDirty(false);
+    setAutoSaveStatus("saved");
   }
 
   async function handlePublish(): Promise<string | null> {
-    if (!editor || isSaving) return "Actiunea este deja in curs.";
+    if (!editor || saveInFlightRef.current) return "Actiunea este deja in curs.";
+
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+      autoSaveTimerRef.current = null;
+    }
+
+    saveInFlightRef.current = true;
 
     setIsSaving(true);
     setActionError(null);
-    const result = await onPublish(editor.getJSON());
+    setAutoSaveStatus("saving");
+
+    let result: string | null;
+    try {
+      result = await onPublish(editor.getJSON());
+    } catch (error) {
+      result = getErrorMessage(error, "Articolul nu a putut fi publicat.");
+    }
+
+    saveInFlightRef.current = false;
     setIsSaving(false);
 
-    if (result) setActionError(result);
+    if (result) {
+      setActionError(result);
+      setAutoSaveStatus("error");
+      queueAutoSave(editor.getJSON());
+    } else {
+      setAutoSaveStatus("saved");
+    }
+
     return result;
   }
 
@@ -567,6 +709,20 @@ export function SimpleEditor({
             <span className="text-center mr-2 text-sm text-muted-foreground">
                 {isEditing ? "Editezi un draft" : "Articol nou"}
               </span>
+            <span
+              className="simple-editor-autosave-status"
+              data-state={autoSaveStatus}
+              role="status"
+              aria-live="polite"
+            >
+              {autoSaveStatus === "saving"
+                ? "Salvare automata..."
+                : autoSaveStatus === "saved"
+                  ? "Salvat automat"
+                  : autoSaveStatus === "error"
+                    ? "Salvarea automata a esuat"
+                    : null}
+            </span>
             <UiButton
               type="button"
               variant="outline"
