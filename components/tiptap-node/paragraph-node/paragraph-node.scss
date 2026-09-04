@@ -169,6 +169,18 @@
   width: auto;
 }
 
+.tiptap.ProseMirror [data-article-body] > p[data-placeholder].is-empty:not(:first-of-type):not(.with-slash)::before {
+  content: none;
+}
+
+.tiptap.ProseMirror [data-article-body]:has(> :not(.is-empty)) > p[data-placeholder].is-empty:not(.with-slash)::before {
+  content: none;
+}
+
+.tiptap.ProseMirror [data-article-body]:has(> :nth-child(2)) > p[data-placeholder].is-empty:not(.with-slash)::before {
+  content: none;
+}
+
 .tiptap.ProseMirror [data-placeholder].is-empty.with-slash::before {
   content: "Write, type '/' for commands…";
   font-style: italic;
