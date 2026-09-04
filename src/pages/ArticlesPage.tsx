@@ -34,6 +34,7 @@ const fetchArticles = async () => {
     .select(
       "id, slug, title, excerpt, category, content, created_at, draft, author_id, author:users(name)",
     )
+    .or("draft.eq.false,draft.is.null")
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -62,6 +63,9 @@ const fetchArticles = async () => {
 export default function ArticlesPage() {
   const { data: articles = [], isLoading } = useQuery({
     queryKey: ["articles"],
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+    refetchOnWindowFocus: false,
     queryFn: fetchArticles,
   });
   const [searchQuery, setSearchQuery] = useState("");

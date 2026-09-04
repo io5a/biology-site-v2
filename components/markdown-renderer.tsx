@@ -76,13 +76,13 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     },
     img: ({ src, alt }: { src?: string; alt?: string }) => {
       const storagePath = src?.replace(/^\/gallery\//, "") ?? "";
-      const { data } = supabase.storage
-        .from("gallery")
-        .getPublicUrl(storagePath);
+      const imageUrl = src?.match(/^(https?:|data:)/)
+        ? src
+        : supabase.storage.from("gallery").getPublicUrl(storagePath).data.publicUrl;
 
       return (
         <img
-          src={data.publicUrl}
+          src={imageUrl}
           alt={alt || ""}
           className="my-6 rounded-lg border border-border"
         />

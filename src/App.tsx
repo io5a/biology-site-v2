@@ -16,6 +16,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import Tiptap from "./Tiptap";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Navigation />
-            <Routes>
+            <Routes >
               <Route path="/" element={<HomePage />} />
               <Route path="/articles" element={<ArticlesPage />} />
               <Route path="/articles/:slug" element={<ArticleDetailPage />} />
@@ -34,6 +35,8 @@ export default function App() {
               <Route path="/competitions" element={<CompetitionsPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/login-page" element={<LoginPage />} />
+              <Route path="/editor" element={<Tiptap />} />
+              <Route path="/editor/:articleId" element={<Tiptap />} />
           </Routes>
         </AuthProvider>
         <SpeedInsights/>

@@ -4,42 +4,116 @@ import { AccountArticle } from "./ui/account-article";
 import { useAuth } from "@/src/context/AuthContext";
 import { Button } from "./ui/button";
 import { supabase } from "@/supabase-client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import { Link } from "react-router-dom";
+import { createArticleSlug } from "@/src/lib/article-content";
+import { getErrorMessage } from "@/src/lib/error-message";
+import { ChangeProfilePicture } from "@/components/change-profile-picture";
+import { useState } from "react";
 
 export function AccountInfo() {
   const { currentUser, setChangingName, userName } = useAuth();
+  const queryClient = useQueryClient();
+  const [avatarVersion, setAvatarVersion] = useState(0);
+  const userId = currentUser?.id ?? "";
 
   async function logout() {
     await supabase.auth.signOut();
   }
 
-  if (!currentUser) {
-    return null;
-  }
-  const userId = currentUser?.id ?? "";
-
-  const { data, isLoading } = useQuery({
+  const { data: articles = [], isLoading } = useQuery({
     queryKey: ["articles", userId],
-    queryFn: async () =>
-      await supabase
+    enabled: Boolean(userId),
+    staleTime: 30_000,
+    gcTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      const { data, error } = await supabase
         .from("articles")
         .select()
         .eq("author_id", userId)
-        .order("created_at", { ascending: false }),
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      return data ?? [];
+    },
   });
-  const articles = data?.data ?? [];
-  
-  let pfpUrl = `https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/${userId}.webp`;
-  const {data:pfpExists,isLoading:isLoadingPfp} = useQuery({
+
+  const { data: pfpExists, dataUpdatedAt: avatarFetchedAt } = useQuery({
     queryKey: ["pfp", userId],
+    enabled: Boolean(userId),
+    staleTime: 5 * 60_000,
+    gcTime: 30 * 60_000,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const { data, error } = await supabase.storage.from("avatars").exists(`${userId}.webp`);
+      if (error) throw error;
       return data;
     }
   });
-  if(!isLoadingPfp && !pfpExists){
-    pfpUrl = `https://hawsggecpatxvgvazfxh.supabase.co/storage/v1/object/public/avatars/default.webp`;
+
+  const avatarPath = pfpExists === false ? "default.webp" : `${userId}.webp`;
+  const avatarUrl = supabase.storage.from("avatars").getPublicUrl(avatarPath).data.publicUrl;
+  const avatarCacheKey = avatarVersion || avatarFetchedAt || "initial";
+  const pfpUrl = `${avatarUrl}?v=${avatarCacheKey}`;
+
+  if (!currentUser) {
+    return null;
+  }
+
+  async function publishDraft(id: string, title: string): Promise<string | null> {
+    try {
+      const { data, error } = await supabase
+        .from("articles")
+        .update({
+          draft: false,
+          slug: createArticleSlug(title, id),
+        })
+        .eq("id", id)
+        .eq("author_id", userId)
+        .eq("draft", true)
+        .select("id")
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) throw new Error("Articolul nu mai este disponibil pentru publicare.");
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["articles", userId] }),
+        queryClient.invalidateQueries({ queryKey: ["articles"] }),
+        queryClient.invalidateQueries({ queryKey: ["home-articles"] }),
+      ]);
+      return null;
+    } catch (error) {
+      return getErrorMessage(error, "Articolul nu a putut fi publicat.");
+    }
+  }
+
+  async function deleteDraft(id: string): Promise<string | null> {
+    try {
+      const { data, error } = await supabase
+        .from("articles")
+        .delete()
+        .eq("id", id)
+        .eq("author_id", userId)
+        .eq("draft", true)
+        .select("id")
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) throw new Error("Draftul nu mai este disponibil pentru stergere.");
+
+      await queryClient.invalidateQueries({ queryKey: ["articles", userId] });
+      return null;
+    } catch (error) {
+      return getErrorMessage(error, "Draftul nu a putut fi sters.");
+    }
+  }
+
+  function handleAvatarUploaded() {
+    setAvatarVersion(Date.now());
+    void queryClient.invalidateQueries({ queryKey: ["pfp", userId] });
   }
 
   return (
@@ -47,7 +121,8 @@ export function AccountInfo() {
       <div className="max-[1200px]:hidden flex h-[calc(100vh-80px)] items-center justify-center p-0 ">
         <div className="flex h-[90%] w-[70%] items-center justify-between rounded-[20px] border bg-[#0E150A] p-7.5">
           <div className="flex h-full w-1/2 flex-col items-center justify-evenly rounded-[20px] bg-[#1a331e] wrap-anywhere">
-            <img className="h-75 w-75 rounded-full" src={pfpUrl} />
+            <img className="h-75 w-75 rounded-full" src={pfpUrl} alt="Poza de profil" />
+            <ChangeProfilePicture userId={userId} onUploaded={handleAvatarUploaded} />
             <div className="text-[25px] text-center">
               {userName ? `Nume utilizator: ${userName}` : ""}
             </div>
@@ -69,19 +144,24 @@ export function AccountInfo() {
               </Button>
             </div>
           </div>
-          <div className="flex h-full w-1/2 flex-col p-5">
+          <div className="flex h-full w-1/2 flex-col p-5 relative">
+            <Link to="/editor" className="absolute bottom-10 right-10 bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-2 rounded-2xl font-medium">Adauga un articol</Link>
             <div className="flex flex-col items-center text-[30px]">
               Articole
             </div>
             <hr className="mt-1.25 border border-[rgb(180,180,180)]" />
-            <div className="flex h-full flex-col overflow-scroll p-2.5">
+            <div className="flex h-full flex-col overflow-y-scroll p-2.5">
               {articles.map((Article) => {
                 return (
                   <AccountArticle
-                    key={Article.title ?? ""}
+                    key={Article.id}
+                    id={Article.id}
                     slug={Article.slug ?? ""}
                     name={Article.title ?? ""}
                     shortDesc={Article.excerpt ?? ""}
+                    draft={Article.draft === true}
+                    onPublish={() => publishDraft(Article.id, Article.title ?? "")}
+                    onDelete={() => deleteDraft(Article.id)}
                   />
                 );
               })}
@@ -95,9 +175,10 @@ export function AccountInfo() {
             <img
               className="aspect-square h-full p-3 rounded-full"
               src={pfpUrl}
+              alt="Poza de profil"
             />
             <div className="flex flex-col gap-3 p-3">
-              <div className="overflow-scroll h-full w-full">
+              <div className="overflow-y-scroll h-full w-full">
                 <div className="md:text-3xl text-center">
                   {userName ? `Nume utilizator: ${userName}` : ""}
                 </div>
@@ -108,14 +189,18 @@ export function AccountInfo() {
             </div>
           </div> : (<Skeleton className="w-full h-1/4 mt-4 rounded-2xl px-2"></Skeleton>)}
           {!isLoading ? (articles.length > 0 && (
-            <div className="flex h-full flex-col overflow-scroll bg-[#08250d] mt-4 rounded-2xl px-2">
+            <div className="flex h-full flex-col overflow-y-scroll bg-[#08250d] mt-4 rounded-2xl px-2">
               {articles.map((Article) => {
                 return (
                   <AccountArticle
-                    key={Article.title ?? ""}
+                    key={Article.id}
+                    id={Article.id}
                     slug={Article.slug ?? ""}
                     name={Article.title ?? ""}
                     shortDesc={Article.excerpt ?? ""}
+                    draft={Article.draft === true}
+                    onPublish={() => publishDraft(Article.id, Article.title ?? "")}
+                    onDelete={() => deleteDraft(Article.id)}
                   />
                 );
               })}
@@ -134,6 +219,7 @@ export function AccountInfo() {
               >
                 {userName ? `Schimba Numele` : "Adauga Nume"}
               </Button>
+              <ChangeProfilePicture userId={userId} onUploaded={handleAvatarUploaded} />
             </div>
           </div>
         </div>
