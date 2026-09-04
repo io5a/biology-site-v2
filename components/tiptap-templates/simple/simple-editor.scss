@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.simple-editor-wrapper {
+  --tt-toolbar-height: 44px;
+  color: var(--tt-theme-text);
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: var(--tt-bg-color);
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-scrollbar-color) transparent;
+}
+
+.simple-editor-wrapper::-webkit-scrollbar,
+.simple-editor-wrapper *::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.simple-editor-wrapper::-webkit-scrollbar-thumb,
+.simple-editor-wrapper *::-webkit-scrollbar-thumb {
+  background-color: var(--tt-scrollbar-color);
+  border-radius: 9999px;
+}
+
+.simple-editor-wrapper::-webkit-scrollbar-track,
+.simple-editor-wrapper *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.simple-editor-wrapper .tiptap.ProseMirror {
+  font-family: "DM Sans", sans-serif;
+}
+
+.simple-editor-wrapper .tiptap.ProseMirror ::selection {
+  background-color: var(--tt-selection-color);
+  color: var(--foreground);
+}
+
+.simple-editor-wrapper .simple-editor-search-and-replace {
+  align-self: flex-end;
+  margin: 0.5rem;
+  z-index: 51;
+  max-height: calc(100dvh - var(--tt-toolbar-height) - 1rem);
+}
+
+.simple-editor-content {
+  max-width: 816px;
+  width: calc(100% - 2rem);
+  min-height: calc(100vh - var(--tt-toolbar-height) - 2rem);
+  margin: 1rem auto 3rem;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 3px color-mix(in srgb, var(--foreground) 8%, transparent),
+    0 12px 32px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+.simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1;
+  padding: 3rem 3rem 30vh;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content {
+    width: calc(100% - 1rem);
+    min-height: calc(100vh - 2rem);
+    margin: 0.5rem auto 4rem;
+  }
+
+  .simple-editor-wrapper .simple-editor-search-and-replace {
+    align-self: stretch;
+    width: calc(100% - 1rem);
+    max-height: calc(100dvh - 1rem);
+    margin: 0.5rem;
+  }
+
+  .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem 1.5rem 30vh;
+  }
+}

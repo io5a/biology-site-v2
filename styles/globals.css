@@ -3,6 +3,68 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.simple-editor-wrapper {
+  --tt-bg-color: var(--background);
+  --tt-theme-text: var(--foreground);
+  --tt-border-color: var(--border);
+  --tt-border-color-tint: var(--border);
+  --tt-sidebar-bg-color: var(--muted);
+  --tt-scrollbar-color: var(--border);
+  --tt-cursor-color: var(--primary);
+  --tt-selection-color: color-mix(in srgb, var(--primary) 28%, transparent);
+  --tt-card-bg-color: var(--card);
+  --tt-card-border-color: var(--border);
+  --tt-toolbar-bg-color: var(--background);
+  --tt-toolbar-border-color: var(--border);
+  --tt-brand-color-300: color-mix(in srgb, var(--primary) 70%, transparent);
+  --tt-brand-color-400: var(--primary);
+  --tt-brand-color-500: var(--primary);
+  --tt-brand-color-600: var(--primary);
+  --tt-color-green-base: var(--primary);
+  --white: var(--card);
+  --black: var(--background);
+  --tt-gray-light-a-50: color-mix(in srgb, var(--muted) 40%, transparent);
+  --tt-gray-light-a-100: color-mix(in srgb, var(--muted) 70%, transparent);
+  --tt-gray-light-a-200: var(--border);
+  --tt-gray-light-a-300: var(--border);
+  --tt-gray-light-a-400: var(--muted-foreground);
+  --tt-gray-light-a-500: var(--muted-foreground);
+  --tt-gray-light-a-600: var(--foreground);
+  --tt-gray-light-a-700: var(--foreground);
+  --tt-gray-light-a-800: var(--foreground);
+  --tt-gray-light-a-900: var(--foreground);
+  --tt-gray-light-50: var(--card);
+  --tt-gray-light-100: var(--muted);
+  --tt-gray-light-200: var(--muted);
+  --tt-gray-light-300: var(--border);
+  --tt-gray-light-400: var(--muted-foreground);
+  --tt-gray-light-500: var(--muted-foreground);
+  --tt-gray-light-600: var(--foreground);
+  --tt-gray-light-700: var(--foreground);
+  --tt-gray-light-800: var(--foreground);
+  --tt-gray-light-900: var(--foreground);
+  --tt-gray-dark-a-50: color-mix(in srgb, var(--muted) 40%, transparent);
+  --tt-gray-dark-a-100: color-mix(in srgb, var(--muted) 70%, transparent);
+  --tt-gray-dark-a-200: var(--border);
+  --tt-gray-dark-a-300: var(--border);
+  --tt-gray-dark-a-400: var(--muted-foreground);
+  --tt-gray-dark-a-500: var(--muted-foreground);
+  --tt-gray-dark-a-600: var(--foreground);
+  --tt-gray-dark-a-700: var(--foreground);
+  --tt-gray-dark-a-800: var(--foreground);
+  --tt-gray-dark-a-900: var(--foreground);
+  --tt-gray-dark-50: var(--card);
+  --tt-gray-dark-100: var(--muted);
+  --tt-gray-dark-200: var(--muted);
+  --tt-gray-dark-300: var(--border);
+  --tt-gray-dark-400: var(--muted-foreground);
+  --tt-gray-dark-500: var(--muted-foreground);
+  --tt-gray-dark-600: var(--foreground);
+  --tt-gray-dark-700: var(--foreground);
+  --tt-gray-dark-800: var(--foreground);
+  --tt-gray-dark-900: var(--foreground);
+}
+
 :root,
 [data-theme="default"] {
   --background: oklch(0.98 0.01 150);
