@@ -6,6 +6,7 @@ import {
   EditorContext,
   useCurrentEditor,
   useEditor,
+  type Editor,
 } from "@tiptap/react";
 import type { JSONContent } from "@tiptap/core";
 import {
@@ -99,6 +100,26 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 const SEARCH_AND_REPLACE_SCROLL_OPTIONS: ScrollIntoViewOptions = {
   block: "center",
 };
+
+function getPastedImageFiles(event: ClipboardEvent): File[] {
+  const clipboardData = event.clipboardData;
+  if (!clipboardData) return [];
+
+  const files = new Set<File>();
+
+  for (const item of Array.from(clipboardData.items)) {
+    if (!item.type.startsWith("image/")) continue;
+
+    const file = item.getAsFile();
+    if (file) files.add(file);
+  }
+
+  for (const file of Array.from(clipboardData.files)) {
+    if (file.type.startsWith("image/")) files.add(file);
+  }
+
+  return Array.from(files);
+}
 
 import { ArticleExtensions } from "./article-schema";
 import { Placeholder } from "@tiptap/extensions";
@@ -332,6 +353,51 @@ export function SimpleEditor({
   const [actionError, setActionError] = useState<string | null>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
   const searchAndReplaceButtonRef = useRef<HTMLButtonElement | null>(undefined);
+  const editorRef = useRef<Editor | null>(null);
+
+  async function insertPastedImages(files: File[]) {
+    const currentEditor = editorRef.current;
+    if (!currentEditor) return;
+
+    let selectionBookmark = currentEditor.state.selection.getBookmark();
+
+    for (const file of files) {
+      try {
+        const src = await handleImageUpload(file);
+
+        if (currentEditor.isDestroyed) return;
+
+        const selection = selectionBookmark.resolve(currentEditor.state.doc);
+        currentEditor.view.dispatch(
+          currentEditor.state.tr.setSelection(selection),
+        );
+
+        const fileName = file.name || "Imagine lipita";
+        const inserted = currentEditor
+          .chain()
+          .focus()
+          .insertContent({
+            type: "image",
+            attrs: {
+              src,
+              alt: fileName,
+              title: fileName,
+              align: "center",
+            },
+          })
+          .run();
+
+        if (!inserted) {
+          throw new Error("Imaginea nu a putut fi inserata.");
+        }
+
+        selectionBookmark = currentEditor.state.selection.getBookmark();
+      } catch (error) {
+        setActionError(getErrorMessage(error, "Imaginea nu a putut fi lipita."));
+        return;
+      }
+    }
+  }
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -342,6 +408,19 @@ export function SimpleEditor({
         autocapitalize: "off",
         "aria-label": "Main content area, start typing to enter text.",
         class: "simple-editor",
+      },
+      handlePaste: (view, event) => {
+        const currentEditor = editorRef.current;
+        const files = getPastedImageFiles(event);
+
+        if (!currentEditor || currentEditor.view !== view || files.length === 0) {
+          return false;
+        }
+
+        event.preventDefault();
+        setActionError(null);
+        void insertPastedImages(files);
+        return true;
       },
     },
     extensions: [
@@ -400,6 +479,8 @@ export function SimpleEditor({
       setActionError(null);
     },
   });
+
+  editorRef.current = editor;
 
   const rect = useCursorVisibility({
     editor,
