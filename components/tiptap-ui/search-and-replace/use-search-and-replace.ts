@@ -185,7 +185,7 @@ export function scrollCurrentResultIntoView(
   const editorDom = editor.view.dom
   if (editorDom.contains(document.activeElement)) return
 
-  let target: HTMLElement | null = null
+  let target: HTMLElement | null
   try {
     const { node } = editor.view.domAtPos(result.from)
     target = node instanceof HTMLElement ? node : node.parentElement

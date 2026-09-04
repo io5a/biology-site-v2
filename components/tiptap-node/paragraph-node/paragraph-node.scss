@@ -160,33 +160,18 @@
 /* =====================
      PLACEHOLDER
      ===================== */
-.is-empty:not(.with-slash)[data-placeholder]:has(
-    > .ProseMirror-trailingBreak:only-child
-  )::before {
+.tiptap.ProseMirror [data-placeholder].is-empty:not(.with-slash)::before {
   content: attr(data-placeholder);
+  color: var(--placeholder-color);
+  pointer-events: none;
+  float: left;
+  height: 0;
+  width: auto;
 }
 
-.is-empty.with-slash[data-placeholder]:has(
-    > .ProseMirror-trailingBreak:only-child
-  )::before {
+.tiptap.ProseMirror [data-placeholder].is-empty.with-slash::before {
   content: "Write, type '/' for commands…";
   font-style: italic;
-}
-
-.is-empty[data-placeholder]:has(
-    > .ProseMirror-trailingBreak:only-child
-  ):before {
-  pointer-events: none;
-  height: 0;
-  position: absolute;
-  width: 100%;
-  text-align: inherit;
-  left: 0;
-  right: 0;
-}
-
-.is-empty[data-placeholder]:has(> .ProseMirror-trailingBreak):before {
-  color: var(--placeholder-color);
 }
 
 /* =====================

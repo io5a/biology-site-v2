@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/supabase-client'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
+import { TiptapArticleRenderer } from '@/src/components/tiptap-article-renderer'
+import { parseArticleDocument } from '@/src/lib/article-content'
 import { Skeleton } from '@/src/components/ui/skeleton'
 
 function ArticleDetailSkeleton() {
@@ -31,6 +33,9 @@ export default function ArticleDetailPage() {
   const { data: article, isLoading } = useQuery({
     queryKey: ['article', slug],
     enabled: Boolean(slug),
+    staleTime: 5 * 60_000,
+    gcTime: 30 * 60_000,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       if (!slug) return null
 
@@ -38,6 +43,7 @@ export default function ArticleDetailPage() {
         .from('articles')
         .select('*, author:users(name)')
         .eq('slug', slug)
+        .or('draft.eq.false,draft.is.null')
         .maybeSingle()
 
       if (error) throw error
@@ -49,6 +55,8 @@ export default function ArticleDetailPage() {
   if (isLoading) {
     return <ArticleDetailSkeleton />
   }
+
+  const tiptapDocument = parseArticleDocument(article?.content ?? null)
 
   if (!article) {
     return (
@@ -67,7 +75,11 @@ export default function ArticleDetailPage() {
           <p className="mt-3 text-muted-foreground">{new Date(article.created_at).toDateString()}</p>
           <p className="text-muted-foreground">Autor: {article.author?.name ?? 'anonim'}</p>
         </header>
-        <MarkdownRenderer content={article.content ?? ''} />
+        {tiptapDocument ? (
+          <TiptapArticleRenderer document={tiptapDocument} />
+        ) : (
+          <MarkdownRenderer content={article.content ?? ''} />
+        )}
       </article>
     </main>
   )

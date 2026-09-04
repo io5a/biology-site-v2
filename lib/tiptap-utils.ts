@@ -1,5 +1,6 @@
 import type { Node as PMNode } from "@tiptap/pm/model"
 import type { Transaction } from "@tiptap/pm/state"
+import { supabase } from "@/supabase-client"
 import { clsx, type ClassValue } from "clsx"
 import {
   AllSelection,
@@ -386,17 +387,43 @@ export const handleImageUpload = async (
     )
   }
 
-  // For demo/testing: Simulate upload progress. In production, replace the following code
-  // with your own upload implementation.
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
-      throw new Error("Upload cancelled")
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    onProgress?.({ progress })
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Fisierul selectat nu este o imagine")
   }
 
-  return "/images/tiptap-ui-placeholder-image.jpg"
+  if (abortSignal?.aborted) {
+    throw new Error("Upload cancelled")
+  }
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser()
+  if (userError) throw userError
+  if (!user) throw new Error("Trebuie sa fii autentificat pentru a incarca imagini")
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      ?.toLowerCase()
+      .replace(/[^a-z0-9]/g, "") || "img"
+  const storagePath = `articles/${user.id}/${crypto.randomUUID()}.${extension}`
+  onProgress?.({ progress: 10 })
+
+  const { error: uploadError } = await supabase.storage
+    .from("gallery")
+    .upload(storagePath, file, {
+      cacheControl: "31536000",
+      contentType: file.type,
+      upsert: false,
+    })
+
+  if (uploadError) throw uploadError
+  if (abortSignal?.aborted) throw new Error("Upload cancelled")
+
+  onProgress?.({ progress: 100 })
+  return supabase.storage.from("gallery").getPublicUrl(storagePath).data.publicUrl
 }
 
 type ProtocolOptions = {

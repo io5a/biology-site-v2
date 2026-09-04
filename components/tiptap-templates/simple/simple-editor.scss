@@ -2,11 +2,13 @@
 
 .simple-editor-wrapper {
   --tt-toolbar-height: 44px;
+  --tt-editor-actions-height: 3.5rem;
   color: var(--tt-theme-text);
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height: 100vh;
+  height: calc(100dvh - 4rem - 1px);
+  min-height: 0;
   overflow: auto;
   background-color: var(--tt-bg-color);
   scrollbar-width: thin;
@@ -56,14 +58,218 @@
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: 2px;
-  box-shadow:
-    0 1px 3px color-mix(in srgb, var(--foreground) 8%, transparent),
-    0 12px 32px color-mix(in srgb, var(--foreground) 5%, transparent);
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
   flex: 1;
   padding: 3rem 3rem 30vh;
+}
+
+.simple-editor-actions {
+  width: min(816px, calc(100% - 2rem));
+  margin: 0 auto 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 51;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  background: var(--tt-bg-color);
+}
+
+@media (min-width: 481px) {
+  .simple-editor-wrapper .tiptap-toolbar[data-variant="fixed"] {
+    top: var(--tt-editor-actions-height);
+  }
+}
+
+.simple-editor-actions-start {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.simple-editor-status-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0.8rem 0.45rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--border));
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 60%),
+    color-mix(in srgb, var(--card) 90%, var(--primary));
+  box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.simple-editor-status-icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.65rem;
+  color: var(--primary-foreground);
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 55%, var(--accent)));
+}
+
+.simple-editor-status-label {
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simple-editor-action-error,
+.simple-editor-status {
+  width: min(816px, calc(100% - 2rem));
+  margin: 0 auto 0.5rem;
+  font-size: 0.875rem;
+}
+
+.simple-editor-action-error {
+  color: var(--destructive);
+}
+
+.simple-editor-status {
+  margin-bottom: 1.5rem;
+  color: var(--muted-foreground);
+  text-align: right;
+}
+
+.simple-editor.ProseMirror [data-article-header] {
+  padding: 0 0 2.25rem;
+  margin: 0 0 2.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.simple-editor.ProseMirror [data-article-title] {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  max-width: 12ch;
+}
+
+.simple-editor.ProseMirror [data-article-excerpt] {
+  margin: 0 0 1.5rem;
+  color: var(--muted-foreground);
+  font-size: 1.125rem;
+  line-height: 1.55;
+  max-width: 48rem;
+}
+
+.simple-editor .article-category-node {
+  position: relative;
+  display: inline-flex;
+  z-index: 2;
+}
+
+.simple-editor .article-category-trigger,
+.simple-editor .article-category-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font: inherit;
+  color: var(--foreground);
+}
+
+.simple-editor .article-category-trigger {
+  min-height: 2.25rem;
+  padding: 0.4rem 0.7rem 0.4rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.simple-editor .article-category-trigger:hover,
+.simple-editor .article-category-trigger[aria-expanded="true"] {
+  border-color: color-mix(in srgb, var(--primary) 60%, var(--border));
+  background: color-mix(in srgb, var(--primary) 10%, var(--muted));
+}
+
+.simple-editor .article-category-trigger:focus-visible,
+.simple-editor .article-category-option:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.article-category-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.article-category-chevron {
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: 0.15rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  opacity: 0.7;
+}
+
+.article-category-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 12rem;
+  padding: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--popover) 96%, transparent);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(14px);
+}
+
+.simple-editor .article-category-option {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.55rem 0.65rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+.simple-editor .article-category-option:hover,
+.simple-editor .article-category-option[data-selected="true"] {
+  background: color-mix(in srgb, var(--primary) 12%, var(--muted));
+}
+
+.article-category-check {
+  margin-left: auto;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.simple-editor .article-category-node select {
+  color: inherit;
+  font: inherit;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.25rem 0.5rem;
 }
 
 @media screen and (max-width: 480px) {
@@ -82,5 +288,27 @@
 
   .simple-editor-content .tiptap.ProseMirror.simple-editor {
     padding: 1rem 1.5rem 30vh;
+  }
+
+  .simple-editor-actions,
+  .simple-editor-action-error {
+    width: calc(100% - 1rem);
+  }
+
+  .simple-editor-actions-start {
+    width: 100%;
+  }
+
+  .simple-editor-status-card {
+    flex: 1 1 auto;
+  }
+
+  .simple-editor.ProseMirror [data-article-title] {
+    font-size: clamp(2rem, 12vw, 2.75rem);
+  }
+
+  .simple-editor.ProseMirror [data-article-header] {
+    margin-bottom: 2rem;
+    padding-bottom: 1.75rem;
   }
 }

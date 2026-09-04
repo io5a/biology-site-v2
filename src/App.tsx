@@ -36,6 +36,7 @@ export default function App() {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/login-page" element={<LoginPage />} />
               <Route path="/editor" element={<Tiptap />} />
+              <Route path="/editor/:articleId" element={<Tiptap />} />
           </Routes>
         </AuthProvider>
         <SpeedInsights/>

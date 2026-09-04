@@ -5,6 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 export default function GalleryPage() {
   const {data,isLoading}= useQuery({
     queryKey:["photos"],
+    staleTime: 5 * 60_000,
+    gcTime: 30 * 60_000,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const { data, error } = await supabase
         .storage

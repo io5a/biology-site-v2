@@ -5,6 +5,136 @@
     display: block;
   }
 
+  // Tiptap wraps React node views in .react-renderer. The wrapper must float
+  // so the following paragraph can flow beside the image.
+  [data-article-body] > .react-renderer.node-image,
+  > .react-renderer.node-image {
+    display: block;
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin: 2rem auto;
+    clear: both;
+  }
+
+  [data-article-body] > .react-renderer.node-image > .article-image-node,
+  > .react-renderer.node-image > .article-image-node {
+    float: none;
+    margin: 0;
+  }
+
+  [data-article-body]
+      > .react-renderer.node-image:has(> .article-image-node--left),
+  > .react-renderer.node-image:has(> .article-image-node--left) {
+    float: left;
+    margin: 0 1.5rem 1rem 0;
+  }
+
+  [data-article-body]
+      > .react-renderer.node-image:has(> .article-image-node--right),
+  > .react-renderer.node-image:has(> .article-image-node--right) {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+  }
+
+  [data-article-body]
+      > .react-renderer.node-image:has(> .article-image-node--center),
+  > .react-renderer.node-image:has(> .article-image-node--center) {
+    clear: both;
+    float: none;
+    margin: 2rem auto;
+  }
+
+  .article-image-node {
+    display: block;
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0;
+    clear: none;
+  }
+
+  .article-image-node--left {
+    float: none;
+  }
+
+  .article-image-node--right {
+    float: none;
+  }
+
+  .article-image-node--center {
+    float: none;
+  }
+
+  .article-image-frame {
+    position: relative;
+    max-width: 100%;
+  }
+
+  .article-image-node img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--tt-radius-xs, 0.25rem);
+  }
+
+  [data-article-body]
+    > .react-renderer.node-image.ProseMirror-selectednode
+    .article-image-frame,
+  > .react-renderer.node-image.ProseMirror-selectednode .article-image-frame,
+  .article-image-node.ProseMirror-selectednode .article-image-frame {
+    outline: 0.125rem solid var(--tt-brand-color-500);
+    outline-offset: 0.125rem;
+  }
+
+  .article-image-resize-handle {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    width: 0.5rem;
+    height: 2.5rem;
+    padding: 0;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 999px;
+    background: var(--tt-brand-color-500);
+    cursor: ew-resize;
+  }
+
+  .article-image-resize-handle--left {
+    left: -0.25rem;
+  }
+
+  .article-image-resize-handle--right {
+    right: -0.25rem;
+  }
+
+  [data-article-body]::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  [data-article-body]
+    > .react-renderer.node-image:has(> .article-image-node--left)
+    + p,
+  [data-article-body]
+    > .react-renderer.node-image:has(> .article-image-node--right)
+    + p {
+    margin-top: 0;
+  }
+
+  > .react-renderer.node-image:has(> .article-image-node--left) + p,
+  > .react-renderer.node-image:has(> .article-image-node--right) + p {
+    margin-top: 0;
+  }
+
   p > img {
     display: inline-block;
   }
@@ -31,5 +161,25 @@
 
   .tiptap-thread img {
     margin: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .tiptap.ProseMirror {
+    [data-article-body]
+      > .react-renderer.node-image:has(> .article-image-node--left),
+    [data-article-body]
+      > .react-renderer.node-image:has(> .article-image-node--right),
+    > .react-renderer.node-image:has(> .article-image-node--left),
+    > .react-renderer.node-image:has(> .article-image-node--right) {
+      float: none;
+      width: 100% !important;
+      margin: 2rem auto;
+    }
+
+    .article-image-node--left img,
+    .article-image-node--right img {
+      width: 100%;
+    }
   }
 }

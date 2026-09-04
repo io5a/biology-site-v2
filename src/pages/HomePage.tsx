@@ -32,6 +32,7 @@ const fetchFeaturedArticles = async () => {
   const { data, error } = await supabase
     .from('articles')
     .select('*, author:users(name)')
+    .or('draft.eq.false,draft.is.null')
     .order('created_at', { ascending: false })
     .limit(3)
 
@@ -91,11 +92,17 @@ function ArticleSkeleton() {
 export default function HomePage() {
   const { data: articles = [], isLoading: areArticlesLoading } = useQuery({
     queryKey: ['home-articles'],
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+    refetchOnWindowFocus: false,
     queryFn: fetchFeaturedArticles,
   })
 
   const { data: announcements = [], isLoading: areAnnouncementsLoading } = useQuery({
     queryKey: ['home-announcements'],
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+    refetchOnWindowFocus: false,
     queryFn: fetchRecentAnnouncements,
   })
 
