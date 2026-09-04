@@ -1,6 +1,6 @@
 "use client"
 
-import { forwardRef, useCallback, useEffect, useState } from "react"
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import type { Editor } from "@tiptap/react"
 
 // --- Hooks ---
@@ -225,6 +225,7 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
   ) => {
     const { editor } = useTiptapEditor(providedEditor)
     const [isOpen, setIsOpen] = useState(false)
+    const suppressAutoOpenRef = useRef(false)
 
     const {
       isVisible,
@@ -255,6 +256,7 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
     )
 
     const handleSetLink = useCallback(() => {
+      suppressAutoOpenRef.current = true
       setLink()
       setIsOpen(false)
     }, [setLink])
@@ -263,14 +265,18 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
-        setIsOpen(!isOpen)
+        setIsOpen((open) => !open)
       },
-      [onClick, isOpen]
+      [onClick]
     )
 
     useEffect(() => {
-      if (shouldAutoOpen) {
+      if (shouldAutoOpen && !suppressAutoOpenRef.current) {
         setIsOpen(true)
+      }
+
+      if (!shouldAutoOpen) {
+        suppressAutoOpenRef.current = false
       }
     }, [shouldAutoOpen])
 

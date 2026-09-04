@@ -1,4 +1,5 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { useAuth } from "@/src/context/AuthContext";
@@ -20,6 +21,13 @@ export default function Tiptap() {
   const queryClient = useQueryClient();
   const { currentUser } = useAuth();
   const userId = currentUser?.id ?? "";
+  const draftIdRef = useRef<string | null>(articleId ?? null);
+  const draftExistsRef = useRef(Boolean(articleId));
+
+  useEffect(() => {
+    draftIdRef.current = articleId ?? null;
+    draftExistsRef.current = Boolean(articleId);
+  }, [articleId]);
 
   const { data: article, isLoading } = useQuery({
     queryKey: ["article-editor", articleId, userId],
@@ -57,8 +65,9 @@ export default function Tiptap() {
   const initialContent =
     parseArticleDocument(article?.content ?? null) ?? createEmptyArticleDocument();
 
-  async function saveDraft(document: JSONContent): Promise<string | null> {
-    const id = articleId ?? crypto.randomUUID();
+  async function persistDraft(document: JSONContent): Promise<string | null> {
+    const id = draftIdRef.current ?? crypto.randomUUID();
+    draftIdRef.current = id;
     const metadata = extractArticleMetadata(document);
     const payload = {
       id,
@@ -72,11 +81,11 @@ export default function Tiptap() {
     };
 
     try {
-      if (articleId) {
+      if (draftExistsRef.current) {
         const { data, error } = await supabase
           .from("articles")
           .update(payload)
-          .eq("id", articleId)
+          .eq("id", id)
           .eq("author_id", userId)
           .eq("draft", true)
           .select("id")
@@ -87,21 +96,34 @@ export default function Tiptap() {
       } else {
         const { error } = await supabase.from("articles").insert(payload);
         if (error) throw error;
+        draftExistsRef.current = true;
       }
 
-      await queryClient.invalidateQueries({ queryKey: ["articles", userId] });
-      navigate("/login-page");
       return null;
     } catch (error) {
       return getErrorMessage(error);
     }
   }
 
+  async function saveDraft(document: JSONContent): Promise<string | null> {
+    const result = await persistDraft(document);
+    if (result) return result;
+
+    await queryClient.invalidateQueries({ queryKey: ["articles", userId] });
+    navigate("/login-page");
+    return null;
+  }
+
+  async function autoSaveDraft(document: JSONContent): Promise<string | null> {
+    return persistDraft(document);
+  }
+
   async function publishArticle(document: JSONContent): Promise<string | null> {
     const validationError = validateArticleForPublishing(document);
     if (validationError) return validationError;
 
-    const id = articleId ?? crypto.randomUUID();
+    const id = draftIdRef.current ?? crypto.randomUUID();
+    draftIdRef.current = id;
     const metadata = extractArticleMetadata(document);
     const payload = {
       id,
@@ -115,11 +137,11 @@ export default function Tiptap() {
     };
 
     try {
-      if (articleId) {
+      if (draftExistsRef.current) {
         const { data, error } = await supabase
           .from("articles")
           .update(payload)
-          .eq("id", articleId)
+          .eq("id", id)
           .eq("author_id", userId)
           .eq("draft", true)
           .select("id")
@@ -130,6 +152,7 @@ export default function Tiptap() {
       } else {
         const { error } = await supabase.from("articles").insert(payload);
         if (error) throw error;
+        draftExistsRef.current = true;
       }
 
       await Promise.all([
@@ -150,6 +173,7 @@ export default function Tiptap() {
       initialContent={initialContent}
       isEditing={Boolean(articleId)}
       onSaveDraft={saveDraft}
+      onAutoSaveDraft={autoSaveDraft}
       onPublish={publishArticle}
       onBack={() => navigate("/login-page")}
     />

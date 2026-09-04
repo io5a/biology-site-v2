@@ -151,7 +151,14 @@ export function focusNextNode(editor: Editor) {
     return false
   }
 
-  const end = doc.content.size
+  const body = findParentNodeClosestToPos(
+    selection.$from,
+    (node) => node.type.name === "articleBody",
+  )
+
+  if (!body) return false
+
+  const end = body.pos + body.node.nodeSize - 1
   const para = paragraphType.create()
   let tr = state.tr.insert(end, para)
 

@@ -94,6 +94,18 @@
   gap: 0.75rem;
 }
 
+.simple-editor-autosave-status {
+  min-height: 1.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+.simple-editor-autosave-status[data-state="error"] {
+  color: var(--destructive);
+}
+
 .simple-editor-status-card {
   display: flex;
   min-width: 0;

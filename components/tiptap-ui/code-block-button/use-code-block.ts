@@ -116,7 +116,7 @@ export function toggleCodeBlock(editor: Editor | null): boolean {
     ) {
       const pos = findNodePosition({
         editor,
-        node: state.selection.$anchor.node(1),
+        node: state.selection.$anchor.parent,
       })?.pos
       if (!isValidPosition(pos)) return false
 

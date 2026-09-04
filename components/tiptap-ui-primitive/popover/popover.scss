@@ -15,10 +15,24 @@
     --------- POPOVER STYLING SETTINGS -----------
     -------------------------------------------- */
 .tiptap-popover {
-  z-index: 50;
+  --tt-popover-bg-color: var(--popover, var(--card, #ffffff));
+  --tt-popover-border-color: var(--border, rgba(0, 0, 0, 0.12));
+  --tt-popover-text-color: var(--popover-foreground, var(--foreground, #111111));
+
+  z-index: 100;
   outline: none;
+  background-color: var(--tt-popover-bg-color);
+  border: 1px solid var(--tt-popover-border-color);
+  color: var(--tt-popover-text-color);
+  box-shadow: var(--tt-shadow-elevated-md, 0 12px 30px rgb(0 0 0 / 18%));
   transform-origin: var(--radix-popover-content-transform-origin);
   max-height: var(--radix-popover-content-available-height);
+
+  > .tiptap-card {
+    --tiptap-card-bg-color: var(--tt-popover-bg-color);
+    --tiptap-card-border-color: transparent;
+    --tiptap-card-group-label-color: var(--tt-popover-text-color);
+  }
 
   > * {
     max-height: var(--radix-popover-content-available-height);
