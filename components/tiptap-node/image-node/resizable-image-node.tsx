@@ -28,6 +28,7 @@ function getImageAlignment(value: unknown): ImageAlignment {
 }
 
 function ResizableImageView({
+  editor,
   node,
   selected,
   updateAttributes,
@@ -98,7 +99,7 @@ function ResizableImageView({
           draggable={false}
         />
 
-        {selected && (
+        {selected && editor.isEditable && (
           <>
             <button
               type="button"
