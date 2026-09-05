@@ -53,6 +53,7 @@ import "@/components/tiptap-node/list-node/list-node.scss";
 import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/heading-node/heading-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
+import { getPastedImageFiles } from "./simple-editor-utils";
 
 // --- Tiptap UI ---
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu";
@@ -102,26 +103,6 @@ const SEARCH_AND_REPLACE_SCROLL_OPTIONS: ScrollIntoViewOptions = {
 };
 const AUTOSAVE_DELAY_MS = 1000;
 type AutoSaveStatus = "idle" | "saving" | "saved" | "error";
-
-function getPastedImageFiles(event: ClipboardEvent): File[] {
-  const clipboardData = event.clipboardData;
-  if (!clipboardData) return [];
-
-  const files = new Set<File>();
-
-  for (const item of Array.from(clipboardData.items)) {
-    if (!item.type.startsWith("image/")) continue;
-
-    const file = item.getAsFile();
-    if (file) files.add(file);
-  }
-
-  for (const file of Array.from(clipboardData.files)) {
-    if (file.type.startsWith("image/")) files.add(file);
-  }
-
-  return Array.from(files);
-}
 
 import { ArticleExtensions } from "./article-schema";
 import { Placeholder } from "@tiptap/extensions";
@@ -636,15 +617,26 @@ export function SimpleEditor({
     saveInFlightRef.current = false;
     setIsSaving(false);
 
+    const latestDocument = latestDocumentRef.current ?? document;
+    const hasNewerDocument = latestDocument !== document;
+
     if (result) {
       setActionError(result);
       setAutoSaveStatus("error");
-      queueAutoSave(document);
+      queueAutoSave(latestDocument);
+      return;
+    }
+
+    if (hasNewerDocument) {
+      setIsDirty(true);
+      setAutoSaveStatus("idle");
+      queueAutoSave(latestDocument);
       return;
     }
 
     setIsDirty(false);
     setAutoSaveStatus("saved");
+    onBack();
   }
 
   async function handlePublish(): Promise<string | null> {
@@ -704,11 +696,6 @@ export function SimpleEditor({
               <ArrowLeft className="h-4 w-4" />
               Inapoi
             </UiButton>
-          </div>
-          <div className="flex flex-wrap justify-end gap-2 items-center">
-            <span className="text-center mr-2 text-sm text-muted-foreground">
-                {isEditing ? "Editezi un draft" : "Articol nou"}
-              </span>
             <span
               className="simple-editor-autosave-status"
               data-state={autoSaveStatus}
@@ -723,6 +710,11 @@ export function SimpleEditor({
                     ? "Salvarea automata a esuat"
                     : null}
             </span>
+          </div>
+          <div className="flex flex-wrap justify-end gap-2 items-center">
+            <span className="text-center mr-2 text-sm text-muted-foreground">
+                {isEditing ? "Editezi un draft" : "Articol nou"}
+              </span>
             <UiButton
               type="button"
               variant="outline"

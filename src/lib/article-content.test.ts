@@ -77,10 +77,33 @@ describe("article content workflow helpers", () => {
   it("requires metadata and body content before publishing", () => {
     const emptyDocument = createEmptyArticleDocument();
     const validDocument = createArticleDocument();
+    const emptyBodyDocument = structuredClone(validDocument);
+    const emptyBody = emptyBodyDocument.content?.[1];
+    if (!emptyBody) throw new Error("Missing article body fixture");
+    emptyBody.content = [{ type: "paragraph" }];
+    const whitespaceDocument = structuredClone(validDocument);
+    const whitespaceBody = whitespaceDocument.content?.[1];
+    if (!whitespaceBody) throw new Error("Missing article body fixture");
+    whitespaceBody.content = [
+      { type: "paragraph", content: [{ type: "text", text: "   " }] },
+    ];
+    const imageDocument = structuredClone(validDocument);
+    const imageBody = imageDocument.content?.[1];
+    if (!imageBody) throw new Error("Missing article body fixture");
+    imageBody.content = [
+      { type: "image", attrs: { src: "https://example.com/cell.png" } },
+    ];
 
     expect(validateArticleForPublishing(emptyDocument)).toBe(
       "Adauga un titlu articolului.",
     );
+    expect(validateArticleForPublishing(emptyBodyDocument)).toBe(
+      "Adauga continut articolului.",
+    );
+    expect(validateArticleForPublishing(whitespaceDocument)).toBe(
+      "Adauga continut articolului.",
+    );
+    expect(validateArticleForPublishing(imageDocument)).toBeNull();
     expect(validateArticleForPublishing(validDocument)).toBeNull();
   });
 
