@@ -183,7 +183,8 @@
 
 .simple-editor .article-category-node {
   position: relative;
-  display: inline-flex;
+  display: block;
+  width: fit-content;
   z-index: 2;
 }
 
@@ -240,9 +241,7 @@
 }
 
 .article-category-menu {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
+  margin-top: 0.5rem;
   min-width: 12rem;
   padding: 0.35rem;
   border: 1px solid var(--border);

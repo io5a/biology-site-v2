@@ -67,6 +67,14 @@ export function getArticleBody(document: JSONContent): JSONContent {
   );
 }
 
+function hasMeaningfulContent(node: JSONContent | undefined): boolean {
+  if (!node) return false;
+  if (node.type === "image") return true;
+  if (typeof node.text === "string") return Boolean(node.text.trim());
+
+  return (node.content ?? []).some((child) => hasMeaningfulContent(child));
+}
+
 export function serializeArticleContent(document: JSONContent): string {
   return JSON.stringify(document);
 }
@@ -92,7 +100,7 @@ export function validateArticleForPublishing(
   if (!metadata.title) return "Adauga un titlu articolului.";
   if (!metadata.excerpt) return "Adauga o descriere scurta articolului.";
   if (!metadata.category) return "Alege o categorie pentru articol.";
-  if (!body.content?.length) return "Adauga continut articolului.";
+  if (!hasMeaningfulContent(body)) return "Adauga continut articolului.";
 
   return null;
 }

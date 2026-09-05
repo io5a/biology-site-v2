@@ -110,7 +110,6 @@ export default function Tiptap() {
     if (result) return result;
 
     await queryClient.invalidateQueries({ queryKey: ["articles", userId] });
-    navigate("/login-page");
     return null;
   }
 
