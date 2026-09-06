@@ -1,9 +1,10 @@
 import { GalleryPhotos } from "@/components/gallery-photos";
 import { supabase } from "@/supabase-client";
 import { useQuery } from "@tanstack/react-query";
+import { QueryError } from "@/src/components/ui/query-error";
 
 export default function GalleryPage() {
-  const {data,isLoading}= useQuery({
+  const {data,isLoading, isError}= useQuery({
     queryKey:["photos"],
     staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
@@ -20,6 +21,10 @@ export default function GalleryPage() {
       return data;
     },
   })
+  if (isError) {
+    return <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><QueryError /></div></main>;
+  }
+
   if(!isLoading)
     return (
       <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">

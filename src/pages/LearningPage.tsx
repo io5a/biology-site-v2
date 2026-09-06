@@ -2,12 +2,13 @@ import { supabase } from "@/supabase-client";
 import { Database } from "../supabase.types";
 import { useQuery } from "@tanstack/react-query";
 import { LearningMat } from "@/components/learning-mat";
+import { QueryError } from "@/src/components/ui/query-error";
 
 type LearningMaterial =
   Database["public"]["Tables"]["learning_materials"]["Row"];
 
 export default function LearningPage() {
-  const { data: entries = [], isLoading } = useQuery<LearningMaterial[]>({
+  const { data: entries = [], isLoading, isError } = useQuery<LearningMaterial[]>({
     queryKey: ["learn-mat"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -27,7 +28,7 @@ export default function LearningPage() {
       <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <LearningPageHeader />
-          <LearningMat entries={entries} />
+          {isError ? <QueryError /> : isLoading ? null : <LearningMat entries={entries} />}
         </div>
       </main>
     </>
