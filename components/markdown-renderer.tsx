@@ -7,6 +7,17 @@ import type { Components } from "react-markdown";
 import { supabase } from "@/supabase-client";
 import { useQueries, useQuery } from "@tanstack/react-query";
 
+function getSafeUrl(value: string | undefined, allowedProtocols: string[]): string | null {
+  if (!value) return null;
+
+  try {
+    const url = new URL(value, window.location.origin);
+    return allowedProtocols.includes(url.protocol) ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 interface MarkdownRendererProps {
   content: string;
 }
@@ -76,28 +87,37 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     },
     img: ({ src, alt }: { src?: string; alt?: string }) => {
       const storagePath = src?.replace(/^\/gallery\//, "") ?? "";
-      const imageUrl = src?.match(/^(https?:|data:)/)
-        ? src
+      const imageUrl = src?.match(/^(https?:|data:image\/)/i)
+        ? getSafeUrl(src, ["http:", "https:", "data:"])
         : supabase.storage.from("gallery").getPublicUrl(storagePath).data.publicUrl;
+
+      if (!imageUrl) return null;
 
       return (
         <img
           src={imageUrl}
           alt={alt || ""}
+          loading="lazy"
+          decoding="async"
           className="my-6 rounded-lg border border-border"
         />
       );
     },
-    a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
-      <a
-        href={href}
-        className="text-primary underline-offset-4 hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {children}
-      </a>
-    ),
+    a: ({ href, children }: { href?: string; children?: React.ReactNode }) => {
+      const safeHref = getSafeUrl(href, ["http:", "https:", "mailto:"]);
+      if (!safeHref) return <>{children}</>;
+
+      return (
+        <a
+          href={safeHref}
+          className="text-primary underline-offset-4 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      );
+    },
     table: ({ children }: { children?: React.ReactNode }) => (
       <div className="my-6 overflow-x-auto">
         <table className="w-full border-collapse border border-border">

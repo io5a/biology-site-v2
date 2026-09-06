@@ -17,7 +17,10 @@ export default function GalleryPage() {
         throw error;
       }
 
-      return data;
+      return {
+        ...data,
+        objects: data.objects.filter((object) => /\.(avif|gif|jpe?g|png|webp)$/i.test(object.name)),
+      };
     },
   })
   if(!isLoading)
