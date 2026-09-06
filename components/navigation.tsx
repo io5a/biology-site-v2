@@ -47,13 +47,21 @@ export function Navigation() {
             ))}
           </div>
 
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
 
         {mobileMenuOpen && (
-          <div className="border-t border-border py-4 md:hidden">
+          <div id="mobile-navigation" className="border-t border-border py-4 md:hidden">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <NavLink
