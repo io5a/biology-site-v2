@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/src/context/AuthContext";
@@ -16,7 +17,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import Tiptap from "./Tiptap";
+const Tiptap = lazy(() => import("./Tiptap"));
 import { ErrorBoundary } from "@/src/components/error-boundary";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ export default function App() {
         <AuthProvider>
           <Navigation />
           <ErrorBoundary>
+          <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-muted-foreground">Se încarcă...</div>}>
             <Routes >
               <Route path="/" element={<HomePage />} />
               <Route path="/articles" element={<ArticlesPage />} />
@@ -40,6 +42,7 @@ export default function App() {
               <Route path="/editor" element={<Tiptap />} />
               <Route path="/editor/:articleId" element={<Tiptap />} />
             </Routes>
+          </Suspense>
           </ErrorBoundary>
         </AuthProvider>
         <SpeedInsights/>
