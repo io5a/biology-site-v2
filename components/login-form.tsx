@@ -44,22 +44,24 @@ export function LoginForm() {
         <div className="flex lg:w-1/4 md:w-1/2 w-3/4 flex-col items-center justify-center rounded-[10px] bg-[rgb(7,45,24)] px-5 py-6.25">
           <div>Conecteaza-te</div>
           <form className="flex w-full flex-col" onSubmit={handleSubmitForm}>
-            <label className="mt-2.5">Email</label>
+            <label htmlFor="email" className="mt-2.5">Email</label>
             <input
               className="rounded-[5px] border-2 border-[#79877c] p-1"
               name="email"
-              type="text"
+              type="email"
+              autoComplete="email"
               value={email}
               onChange={handleChangeMail}
               placeholder="exemplu@gmail.com"
               id='email'
               required
             />
-            <label className="mt-2.5">Parola</label>
+            <label htmlFor="password" className="mt-2.5">Parola</label>
             <input
               className="password rounded-[5px] border-2 border-[#79877c] p-1"
               name="password"
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={handleChangePassword}
               placeholder="Minim 8 caractere"

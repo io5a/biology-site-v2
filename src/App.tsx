@@ -18,6 +18,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 const Tiptap = lazy(() => import("./Tiptap"));
+import { ErrorBoundary } from "@/src/components/error-boundary";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ export default function App() {
         <AuthProvider>
           <Navigation />
           <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-muted-foreground">Se încarcă...</div>}>
+          <ErrorBoundary>
             <Routes >
               <Route path="/" element={<HomePage />} />
               <Route path="/articles" element={<ArticlesPage />} />
@@ -41,6 +43,7 @@ export default function App() {
               <Route path="/editor/:articleId" element={<Tiptap />} />
             </Routes>
           </Suspense>
+          </ErrorBoundary>
         </AuthProvider>
         <SpeedInsights/>
         <Analytics />

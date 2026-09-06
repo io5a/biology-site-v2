@@ -1,3 +1,4 @@
+import { formatRomanianDate } from '@/src/lib/date-format'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/supabase-client'
@@ -5,6 +6,7 @@ import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { TiptapArticleRenderer } from '@/src/components/tiptap-article-renderer'
 import { parseArticleDocument } from '@/src/lib/article-content'
 import { Skeleton } from '@/src/components/ui/skeleton'
+import { QueryError } from '@/src/components/ui/query-error'
 
 function ArticleDetailSkeleton() {
   return (
@@ -30,7 +32,7 @@ function ArticleDetailSkeleton() {
 export default function ArticleDetailPage() {
   const { slug } = useParams()
 
-  const { data: article, isLoading } = useQuery({
+  const { data: article, isLoading, isError } = useQuery({
     queryKey: ['article', slug],
     enabled: Boolean(slug),
     staleTime: 5 * 60_000,
@@ -52,6 +54,10 @@ export default function ArticleDetailPage() {
     },
   })
 
+  if (isError) {
+    return <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><QueryError /></div></main>
+  }
+
   if (isLoading) {
     return <ArticleDetailSkeleton />
   }
@@ -72,7 +78,7 @@ export default function ArticleDetailPage() {
         <header className="mb-8">
           <p className="mb-2 text-sm uppercase tracking-[0.2em] text-muted-foreground">{article.category}</p>
           <h1 className="text-4xl font-bold text-foreground">{article.title}</h1>
-          <p className="mt-3 text-muted-foreground">{new Date(article.created_at).toDateString()}</p>
+          <p className="mt-3 text-muted-foreground">{formatRomanianDate(article.created_at)}</p>
           <p className="text-muted-foreground">Autor: {article.author?.name ?? 'anonim'}</p>
         </header>
         {tiptapDocument ? (

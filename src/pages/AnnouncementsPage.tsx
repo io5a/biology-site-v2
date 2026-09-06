@@ -3,6 +3,7 @@ import { Skeleton } from '@/src/components/ui/skeleton'
 import { supabase } from '@/supabase-client'
 import { useQuery } from '@tanstack/react-query'
 import type { AnnouncementType } from '@/src/types'
+import { QueryError } from '@/src/components/ui/query-error'
 
 const fetchAnnouncements = async () => {
   const { data, error } = await supabase.from('announcements').select('*').order('created_at', { ascending: false })
@@ -31,7 +32,7 @@ function SkeletonAnnouncements() {
 }
 
 export default function AnnouncementsPage() {
-  const { data: announcements = [], isLoading } = useQuery({
+  const { data: announcements = [], isLoading, isError } = useQuery({
     queryKey: ['announcements'],
     queryFn: fetchAnnouncements,
   })
@@ -64,7 +65,7 @@ export default function AnnouncementsPage() {
           </div>
         </div>
 
-        {isLoading ? <SkeletonAnnouncements /> : <div className="space-y-6">{announcements.map((ann) => <Announcement key={ann.slug} announcement={ann} />)}</div>}
+        {isError ? <QueryError /> : isLoading ? <SkeletonAnnouncements /> : <div className="space-y-6">{announcements.map((ann) => <Announcement key={ann.slug} announcement={ann} />)}</div>}
       </div>
     </main>
   )

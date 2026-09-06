@@ -14,6 +14,7 @@ export function Competitions({ comp }: { comp: CompetitionType[] }) {
 
 function Competition({ comp }: { comp: CompetitionType }) {
   const compDate = new Date(comp.date ?? "");
+    const officialUrl = comp.official_url?.trim();
   const romanianMonths: { [key: number]: string } = {
     0: "Ianuarie",
     1: "Februarie",
@@ -105,8 +106,8 @@ function Competition({ comp }: { comp: CompetitionType }) {
       </div>
       <div className="px-6 pt-0">
         <div className="flex flex-wrap gap-2">
-          <a
-            href={comp.official_url ?? ""}
+          {officialUrl && <a
+            href={officialUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-slot="button"
@@ -130,7 +131,7 @@ function Competition({ comp }: { comp: CompetitionType }) {
               <circle cx="12" cy="12" r="10"></circle>
             </svg>
             Site concurs
-          </a>
+          </a>}
         </div>
       </div>
     </div>

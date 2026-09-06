@@ -3,7 +3,6 @@ import { supabase } from "@/supabase-client";
 export function GalleryPhotos({ files }: { files: Array<{ name: string }> }) {
   const supabaseUrl = supabase.storage.from("gallery").getPublicUrl("")
     .data.publicUrl;
-  console.log(files)
   return (
     <>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -22,7 +21,7 @@ export function GalleryPhotos({ files }: { files: Array<{ name: string }> }) {
 }
 
 function Photo({ file, url }: { file: { path: string }; url: string }) {
-  const fileName = file.path.slice(file.path.indexOf("/") + 1);
+  const fileName = file.path.split("/").pop() ?? file.path;
 
   async function handleDownload() {
     const { data, error } = await supabase.storage
@@ -49,9 +48,11 @@ function Photo({ file, url }: { file: { path: string }; url: string }) {
       <div className="aspect-square overflow-hidden bg-secondary">
         <img
           src={url + file.path}
-          alt={file.path}
+          alt={fileName}
           width={400}
           height={400}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
         ></img>
       </div>
