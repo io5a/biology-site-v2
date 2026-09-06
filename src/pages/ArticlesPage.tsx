@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import { QueryError } from "@/src/components/ui/query-error";
 import type { Database } from "@/src/supabase.types";
 
 type ArticleRow = Database["public"]["Tables"]["articles"]["Row"];
@@ -60,7 +61,7 @@ const fetchArticles = async () => {
 };
 
 export default function ArticlesPage() {
-  const { data: articles = [], isLoading } = useQuery({
+  const { data: articles = [], isLoading, isError } = useQuery({
     queryKey: ["articles"],
     staleTime: 60_000,
     gcTime: 10 * 60_000,
@@ -152,7 +153,9 @@ export default function ArticlesPage() {
           </div>
         </div>
 
-        {isLoading ? (
+        {isError ? (
+          <QueryError />
+        ) : isLoading ? (
           <ArticleListSkeleton />
         ) : sortedAndFilteredArticles.length === 0 ? (
           <div className="py-12 text-center">

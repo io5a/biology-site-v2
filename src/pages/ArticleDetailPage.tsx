@@ -6,6 +6,7 @@ import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { TiptapArticleRenderer } from '@/src/components/tiptap-article-renderer'
 import { parseArticleDocument } from '@/src/lib/article-content'
 import { Skeleton } from '@/src/components/ui/skeleton'
+import { QueryError } from '@/src/components/ui/query-error'
 
 function ArticleDetailSkeleton() {
   return (
@@ -31,7 +32,7 @@ function ArticleDetailSkeleton() {
 export default function ArticleDetailPage() {
   const { slug } = useParams()
 
-  const { data: article, isLoading } = useQuery({
+  const { data: article, isLoading, isError } = useQuery({
     queryKey: ['article', slug],
     enabled: Boolean(slug),
     staleTime: 5 * 60_000,
@@ -52,6 +53,10 @@ export default function ArticleDetailPage() {
       return data
     },
   })
+
+  if (isError) {
+    return <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><QueryError /></div></main>
+  }
 
   if (isLoading) {
     return <ArticleDetailSkeleton />

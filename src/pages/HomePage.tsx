@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/src/components/ui/skeleton'
 import { supabase } from '@/supabase-client'
 import type { Database } from '@/src/supabase.types'
+import { QueryError } from '@/src/components/ui/query-error'
 
 type ArticleRow = Database['public']['Tables']['articles']['Row']
 type ArticleQueryRow = ArticleRow & {
@@ -91,7 +92,7 @@ function ArticleSkeleton() {
 }
 
 export default function HomePage() {
-  const { data: articles = [], isLoading: areArticlesLoading } = useQuery({
+  const { data: articles = [], isLoading: areArticlesLoading, isError: areArticlesError } = useQuery({
     queryKey: ['home-articles'],
     staleTime: 60_000,
     gcTime: 10 * 60_000,
@@ -99,7 +100,7 @@ export default function HomePage() {
     queryFn: fetchFeaturedArticles,
   })
 
-  const { data: announcements = [], isLoading: areAnnouncementsLoading } = useQuery({
+  const { data: announcements = [], isLoading: areAnnouncementsLoading, isError: areAnnouncementsError } = useQuery({
     queryKey: ['home-announcements'],
     staleTime: 60_000,
     gcTime: 10 * 60_000,
@@ -159,7 +160,7 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {isLoading
+            {areAnnouncementsError ? <QueryError /> : isLoading
               ? Array.from({ length: 3 }).map((_, index) => <AnnouncementSkeleton key={index} />)
               : recentAnnouncements.map((announcement) => (
                   <Card key={announcement.slug} className="transition-colors hover:bg-card/80">
@@ -183,7 +184,7 @@ export default function HomePage() {
             <p className="text-muted-foreground">Cele mai recente articole despre biologie</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {isLoading
+            {areArticlesError ? <QueryError /> : isLoading
               ? Array.from({ length: 3 }).map((_, index) => <ArticleSkeleton key={index} />)
               : featuredArticles.map((article) => (
                   <Card key={article.slug} className="flex flex-col transition-all hover:border-primary/50">

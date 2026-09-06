@@ -2,12 +2,13 @@ import { Competitions } from "@/components/competitions";
 import { supabase } from "@/supabase-client";
 import { useQuery } from "@tanstack/react-query";
 import { Database } from "../supabase.types";
+import { QueryError } from "@/src/components/ui/query-error";
 
 type Competition =  
   Database["public"]["Tables"]["competitions"]["Row"];
 
 export default function CompetitionsPage() {
-  const {data: comp=[],isLoading}= useQuery<Competition[]>({
+  const {data: comp=[],isLoading, isError}= useQuery<Competition[]>({
     queryKey: ["competitions"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -26,7 +27,7 @@ export default function CompetitionsPage() {
     <main className="min-h-screen px-4 py-12">
       <div className="mx-auto max-w-7xl">
         <CompetitionsHeader/>
-        <Competitions comp={comp}/>
+        {isError ? <QueryError /> : isLoading ? null : <Competitions comp={comp}/>} 
       </div>
     </main>
   );
