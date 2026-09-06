@@ -28,8 +28,8 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Navigation />
-          <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-muted-foreground">Se încarcă...</div>}>
           <ErrorBoundary>
+          <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center text-muted-foreground">Se încarcă...</div>}>
             <Routes >
               <Route path="/" element={<HomePage />} />
               <Route path="/articles" element={<ArticlesPage />} />
