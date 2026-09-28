@@ -14,13 +14,14 @@ import {
 } from "@/src/lib/article-content";
 import type { JSONContent } from "@tiptap/core";
 import { getErrorMessage } from "@/src/lib/error-message";
+import { Button } from "@/components/ui/button";
 import { QueryError } from "@/src/components/ui/query-error";
 
 export default function Tiptap() {
   const { articleId } = useParams<{ articleId?: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { currentUser } = useAuth();
+  const { currentUser, userName, setChangingName } = useAuth();
   const userId = currentUser?.id ?? "";
   const draftIdRef = useRef<string | null>(articleId ?? null);
   const draftExistsRef = useRef(Boolean(articleId));
@@ -49,6 +50,22 @@ export default function Tiptap() {
 
   if (!currentUser) {
     return <Navigate to="/login-page" replace />;
+  }
+
+  if (!userName) {
+    return (
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 px-4 text-center">
+        <p>Adaugă un nume de utilizator înainte de a crea sau publica articole.</p>
+        <Button
+          onClick={() => {
+            setChangingName(true);
+            navigate("/login-page");
+          }}
+        >
+          Adaugă nume de utilizator
+        </Button>
+      </div>
+    );
   }
 
   if (articleId && isError) {
