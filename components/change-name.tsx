@@ -13,34 +13,40 @@ export function ChangeNameForm() {
 
     if (!currentUser) return;
 
-    const { data: rows, error: selErr } = await supabase
-      .from("users")
-      .select("user_id")
-      .eq("user_id", currentUser.id);
-    if (selErr) {
-      setError(String(selErr?.message));
-      throw selErr;
+    const normalizedName = name.trim();
+    if (normalizedName.length < 2 || normalizedName.length > 40) {
+      setError("Numele trebuie să aibă între 2 și 40 de caractere.");
+      return;
     }
-    if (rows && rows.length > 0) {
-      const { error: updErr } = await supabase
+
+    try {
+      const { data: rows, error: selErr } = await supabase
         .from("users")
-        .update({ name })
+        .select("user_id")
         .eq("user_id", currentUser.id);
-      if (updErr) {
-        if(updErr.code==="23505")
-          setError("Nume deja luat. Incearca altul.");
-        throw updErr;
+      if (selErr) throw selErr;
+
+      if (rows && rows.length > 0) {
+        const { error: updErr } = await supabase
+          .from("users")
+          .update({ name: normalizedName })
+          .eq("user_id", currentUser.id);
+        if (updErr) throw updErr;
+      } else {
+        const { error: insErr } = await supabase
+          .from("users")
+          .insert({ user_id: currentUser.id, name: normalizedName });
+        if (insErr) throw insErr;
       }
-    } else {
-      const { error: insErr } = await supabase
-        .from("users")
-        .insert({ user_id: currentUser.id, name });
-      if (insErr) {
-        setError(String(insErr.message))
-        throw insErr;
-      }
+    } catch (submitError) {
+      setError(
+        submitError && typeof submitError === "object" && "code" in submitError && submitError.code === "23505"
+          ? "Nume deja luat. Încearcă altul."
+          : "Numele nu a putut fi salvat.",
+      );
+      return;
     }
-    setUserName(name);
+    setUserName(normalizedName);
     setChangingName(false);
   }
   function handleChangeName(formField: React.ChangeEvent<HTMLInputElement>) {

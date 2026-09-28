@@ -11,6 +11,7 @@ import { createArticleSlug } from "@/src/lib/article-content";
 import { getErrorMessage } from "@/src/lib/error-message";
 import { ChangeProfilePicture } from "@/components/change-profile-picture";
 import { useState } from "react";
+import { QueryError } from "@/src/components/ui/query-error";
 
 export function AccountInfo() {
   const { currentUser, setChangingName, userName } = useAuth();
@@ -22,7 +23,7 @@ export function AccountInfo() {
     await supabase.auth.signOut();
   }
 
-  const { data: articles = [], isLoading } = useQuery({
+  const { data: articles = [], isLoading, isError } = useQuery({
     queryKey: ["articles", userId],
     enabled: Boolean(userId),
     staleTime: 30_000,
@@ -49,20 +50,21 @@ export function AccountInfo() {
     queryFn: async () => {
       const { data, error } = await supabase.storage.from("avatars").exists(`${userId}.webp`);
       if (error) {
-        console.log("Error checking avatar existence:", error);
         return false;
       };
       return data;
     }
   });
-  console.log("pfpExists", pfpExists)
   const avatarPath = pfpExists === false ? "default.webp" : `${userId}.webp`;
   const avatarUrl = supabase.storage.from("avatars").getPublicUrl(avatarPath).data.publicUrl;
   const avatarCacheKey = avatarVersion || avatarFetchedAt || "initial";
   const pfpUrl = `${avatarUrl}?v=${avatarCacheKey}`;
-  console.log(avatarPath)
   if (!currentUser) {
     return null;
+  }
+
+  if (isError) {
+    return <div className="mx-auto max-w-3xl px-4 py-12"><QueryError message="Articolele contului nu au putut fi încărcate." /></div>;
   }
 
   async function publishDraft(id: string, title: string): Promise<string | null> {

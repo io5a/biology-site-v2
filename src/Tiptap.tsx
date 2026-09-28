@@ -15,6 +15,7 @@ import {
 import type { JSONContent } from "@tiptap/core";
 import { getErrorMessage } from "@/src/lib/error-message";
 import { Button } from "@/components/ui/button";
+import { QueryError } from "@/src/components/ui/query-error";
 
 export default function Tiptap() {
   const { articleId } = useParams<{ articleId?: string }>();
@@ -30,7 +31,7 @@ export default function Tiptap() {
     draftExistsRef.current = Boolean(articleId);
   }, [articleId]);
 
-  const { data: article, isLoading } = useQuery({
+  const { data: article, isLoading, isError } = useQuery({
     queryKey: ["article-editor", articleId, userId],
     enabled: Boolean(articleId && userId),
     queryFn: async () => {
@@ -65,6 +66,10 @@ export default function Tiptap() {
         </Button>
       </div>
     );
+  }
+
+  if (articleId && isError) {
+    return <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl items-center px-4"><QueryError message="Articolul nu a putut fi încărcat." /></div>;
   }
 
   if (articleId && isLoading) {

@@ -17,6 +17,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import Tiptap from "./Tiptap";
+import { ErrorBoundary } from "@/src/components/error-boundary";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Navigation />
+          <ErrorBoundary>
             <Routes >
               <Route path="/" element={<HomePage />} />
               <Route path="/articles" element={<ArticlesPage />} />
@@ -37,7 +39,8 @@ export default function App() {
               <Route path="/login-page" element={<LoginPage />} />
               <Route path="/editor" element={<Tiptap />} />
               <Route path="/editor/:articleId" element={<Tiptap />} />
-          </Routes>
+            </Routes>
+          </ErrorBoundary>
         </AuthProvider>
         <SpeedInsights/>
         <Analytics />
