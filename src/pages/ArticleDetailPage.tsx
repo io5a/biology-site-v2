@@ -1,3 +1,4 @@
+import { formatRomanianDate } from '@/src/lib/date-format'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/supabase-client'
@@ -72,7 +73,7 @@ export default function ArticleDetailPage() {
         <header className="mb-8">
           <p className="mb-2 text-sm uppercase tracking-[0.2em] text-muted-foreground">{article.category}</p>
           <h1 className="text-4xl font-bold text-foreground">{article.title}</h1>
-          <p className="mt-3 text-muted-foreground">{new Date(article.created_at).toDateString()}</p>
+          <p className="mt-3 text-muted-foreground">{formatRomanianDate(article.created_at)}</p>
           <p className="text-muted-foreground">Autor: {article.author?.name ?? 'anonim'}</p>
         </header>
         {tiptapDocument ? (

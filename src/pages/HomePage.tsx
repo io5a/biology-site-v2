@@ -1,3 +1,4 @@
+import { formatRomanianDate } from '@/src/lib/date-format'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Bell, BookOpen, Dna } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
@@ -22,7 +23,7 @@ const mapArticle = (article: ArticleQueryRow) => {
     excerpt: article.excerpt ?? '',
     category: article.category ?? '',
     content: article.content ?? '',
-    date: article.created_at ? new Date(article.created_at).toDateString() : '',
+    date: formatRomanianDate(article.created_at),
     readTime: '',
     authorName: authorRelation?.name ?? null,
   }
@@ -165,7 +166,7 @@ export default function HomePage() {
                     <CardHeader>
                       <div className="mb-2 flex items-center justify-between">
                         <Badge variant="outline">{announcement.type}</Badge>
-                        <span className="text-xs text-muted-foreground">{announcement.date}</span>
+                        <span className="text-xs text-muted-foreground">{formatRomanianDate(announcement.date)}</span>
                       </div>
                       <CardTitle className="text-lg">{announcement.title}</CardTitle>
                     </CardHeader>
@@ -198,7 +199,7 @@ export default function HomePage() {
                     </CardHeader>
                     <CardContent className="mt-auto">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">{article.date}</span>
+                        <span className="text-sm text-muted-foreground">{formatRomanianDate(article.date)}</span>
                         <Button asChild variant="ghost" size="sm" className="gap-1">
                           <Link to={`/articles/${article.slug}`}>
                             Citește mai mult

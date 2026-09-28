@@ -1,3 +1,4 @@
+import { formatRomanianDate } from "@/src/lib/date-format";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
@@ -50,9 +51,7 @@ const fetchArticles = async () => {
         excerpt: article.excerpt ?? "",
         category: article.category ?? "",
         content: article.content ?? "",
-        date: article.created_at
-          ? new Date(article.created_at).toDateString()
-          : "",
+        date: formatRomanianDate(article.created_at),
         readTime: "",
         authorId: article.author_id,
         authorName: authorRelation?.name ?? null,
